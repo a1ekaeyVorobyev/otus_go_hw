@@ -41,14 +41,17 @@ func (l *List) Item() *Item {
 func (l *List) Remove(remoteItem *Item) error {
 
 	prev := remoteItem.prev
-	if prev.next != remoteItem.data {
-		return fmt.Errorf("нет данного элемента")
-	}
 	next := remoteItem.next
 	if prev != nil {
+		if prev.next != remoteItem.data {
+			return fmt.Errorf("нет данного элемента")
+		}
 		prev.next = next
 	}
 	if next != nil {
+		if next.prev != remoteItem.data {
+			return fmt.Errorf("нет данного элемента")
+		}
 		next.prev = prev
 	}
 	l.Size--
