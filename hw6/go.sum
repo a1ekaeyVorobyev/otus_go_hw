@@ -1,0 +1,7 @@
+github.com/a1ekaeyVorobyev/otus_go_hw v0.0.0-20191223183109-4d6344d4b099 h1:d8xguqmdoogzkRorOGSNnmjEcxnVsp5FINHFwDhCn5A=
+github.com/a1ekaeyVorobyev/otus_go_hw v0.0.0-20191223183109-4d6344d4b099/go.mod h1:ETMBek0HyqvNudUDZyKhX86lMP1uQ2XLoZf4ZeswZIA=
+github.com/beevik/ntp v0.2.0/go.mod h1:hIHWr+l3+/clUnF44zdK+CWW7fO8dR5cIylAQ76NRpg=
+golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
+golang.org/x/net v0.0.0-20191207000613-e7e4b65ae663/go.mod h1:z5CRVTTTmAJ677TzLLGU+0bjPO0LkuOLi4/5GtJWs/s=
+golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
