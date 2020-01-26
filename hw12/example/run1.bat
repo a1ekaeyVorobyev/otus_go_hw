@@ -1,0 +1,1 @@
+example.exe D:\otus_go_hw\hw12\env writeListEnvVar.exe
