@@ -71,7 +71,7 @@ func main() {
 	}
 	fmt.Print("\nУдаляем элемент из другого списка : 	")
 	f:= hw6.List_New()
-	f.PushFont("dd")
+	f.PushBack("dd")
 	if err := s.Remove(f.First()); err!=nil{
 		fmt.Println(err.Error())
 	}

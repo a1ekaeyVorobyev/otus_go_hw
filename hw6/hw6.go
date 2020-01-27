@@ -36,7 +36,7 @@ func (l *List) Len() int {
 }
 
 func (l *List) Remove(remoteItem *Item) error {
-	if (l != remoteItem.list){
+	if l != remoteItem.list {
 		return fmt.Errorf("данный элемент не пренадлежит этому списку")
 	}
 	prev := remoteItem.prev
@@ -58,33 +58,35 @@ func (l *List) Remove(remoteItem *Item) error {
 }
 
 func (l *List) PushFont(data interface{}) {
+	temp := l.First()
 	item := new(Item)
 	item.data = data
-	temp := l.First()
 	item.prev = temp
 	l.head = item
 	if temp != nil {
-		temp.next = l.head
+		temp.next = item
 	}
 	if l.Last() == nil {
 		l.tail = item
 	}
-	item.list=l
+	item.list = l
 	l.Size++
 }
 
-func (l *List) PushBack (data interface{}) {
+func (l *List) PushBack(data interface{}) {
 	temp := l.Last()
 	item := new(Item) //:= new(Item)
 	item.data = data
 	item.prev = nil
 	item.next = temp
-	temp.prev = item
+	if temp != nil {
+		temp.prev = item
+	}
 	l.tail = item
 	if l.First() == nil {
 		l.head = item
 	}
-	item.list=l
+	item.list = l
 	l.Size++
 }
 
