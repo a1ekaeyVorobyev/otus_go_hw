@@ -57,7 +57,7 @@ func (l *List) Remove(remoteItem *Item) error {
 	return nil
 }
 
-func (l *List) PushFont(data interface{}) {
+func (l *List) PushBack(data interface{}) {
 	temp := l.First()
 	item := new(Item)
 	item.data = data
@@ -73,7 +73,7 @@ func (l *List) PushFont(data interface{}) {
 	l.Size++
 }
 
-func (l *List) PushBack(data interface{}) {
+func (l *List) PushFont(data interface{}) {
 	temp := l.Last()
 	item := new(Item) //:= new(Item)
 	item.data = data

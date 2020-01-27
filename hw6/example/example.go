@@ -9,9 +9,9 @@ func main() {
 	fmt.Println("Создаем список ")
 	s := hw6.List_New()
 
-	s.PushFont("dd")
-	s.PushFont("4")
-	s.PushFont(5)
+	s.PushBack("dd")
+	s.PushBack("4")
+	s.PushBack(5)
 
 	fmt.Println("Размер = ", s.Len())
 
