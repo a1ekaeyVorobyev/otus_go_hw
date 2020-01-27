@@ -6,6 +6,7 @@ type Item struct {
 	data interface{}
 	next *Item
 	prev *Item
+	list *List
 }
 
 func (i *Item) Prev() *Item {
@@ -14,6 +15,10 @@ func (i *Item) Prev() *Item {
 
 func (i *Item) Next() *Item {
 	return i.next
+}
+
+func (i *Item) GetList() *List {
+	return i.list
 }
 
 func (i *Item) Value() interface{} {
@@ -30,11 +35,10 @@ func (l *List) Len() int {
 	return l.Size
 }
 
-func (l *List) Item() *Item {
-	return l.head
-}
-
 func (l *List) Remove(remoteItem *Item) error {
+	if (l != remoteItem.list){
+		return fmt.Errorf("данный элемент не пренадлежит этому списку")
+	}
 	prev := remoteItem.prev
 	next := remoteItem.next
 	if prev != nil {
@@ -59,13 +63,14 @@ func (l *List) PushFont(data interface{}) {
 	temp := l.First()
 	item.prev = temp
 	l.head = item
-	l.Size++
 	if temp != nil {
 		temp.next = l.head
 	}
 	if l.Last() == nil {
 		l.tail = item
 	}
+	item.list=l
+	l.Size++
 }
 
 func (l *List) PushBack (data interface{}) {
@@ -74,9 +79,13 @@ func (l *List) PushBack (data interface{}) {
 	item.data = data
 	item.prev = nil
 	item.next = temp
-	l.Size++
 	temp.prev = item
 	l.tail = item
+	if l.First() == nil {
+		l.head = item
+	}
+	item.list=l
+	l.Size++
 }
 
 func (l *List) First() *Item {
