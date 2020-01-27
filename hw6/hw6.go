@@ -9,37 +9,32 @@ type Item struct {
 }
 
 func (i *Item) Prev() *Item {
-
 	return i.prev
 }
 
 func (i *Item) Next() *Item {
-
 	return i.next
 }
 
 func (i *Item) Value() interface{} {
-
 	return i.data
 }
 
 type List struct {
 	head *Item
+	tail *Item
 	Size int
 }
 
 func (l *List) Len() int {
-
 	return l.Size
 }
 
 func (l *List) Item() *Item {
-
 	return l.head
 }
 
 func (l *List) Remove(remoteItem *Item) error {
-
 	prev := remoteItem.prev
 	next := remoteItem.next
 	if prev != nil {
@@ -59,45 +54,40 @@ func (l *List) Remove(remoteItem *Item) error {
 }
 
 func (l *List) PushFont(data interface{}) {
-
-	Item := new(Item)
-	Item.data = data
+	item := new(Item)
+	item.data = data
 	temp := l.First()
-	Item.prev = temp
-	l.head = Item
+	item.prev = temp
+	l.head = item
 	l.Size++
 	if temp != nil {
 		temp.next = l.head
 	}
+	if l.Last() == nil {
+		l.tail = item
+	}
 }
 
-func (l *List) PushBack(data interface{}) {
-
+func (l *List) PushBack (data interface{}) {
 	temp := l.Last()
-	Item := new(Item) //:= new(Item)
-	Item.data = data
-	Item.prev = nil
-	Item.next = temp
+	item := new(Item) //:= new(Item)
+	item.data = data
+	item.prev = nil
+	item.next = temp
 	l.Size++
-	temp.prev = Item
+	temp.prev = item
+	l.tail = item
 }
 
 func (l *List) First() *Item {
-
 	return l.head
 }
 
 func (l *List) Last() *Item {
-
-	var i *Item
-	for e := l.Item(); e != nil; e = e.Prev() {
-		i = e
-	}
-	return i
+	return l.tail
 }
 
 func List_New() *List {
-
 	l := new(List)
 	l.Size = 0
 	return l

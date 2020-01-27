@@ -6,16 +6,19 @@ import (
 )
 
 func main() {
-
 	fmt.Println("Создаем список ")
 	s := hw6.List_New()
+
 	s.PushFont("dd")
 	s.PushFont("4")
 	s.PushFont(5)
 
 	fmt.Println("Размер = ", s.Len())
+
 	elemLast := s.Last()
+
 	fmt.Println("Последний = ", elemLast.Value())
+
 	elemFirst := s.First()
 	fmt.Println("Первый =", elemFirst.Value())
 
@@ -61,4 +64,5 @@ func main() {
 	for e := s.First(); e != nil; e = e.Prev() {
 		fmt.Print(e.Value(), ";")
 	}
+
 }
