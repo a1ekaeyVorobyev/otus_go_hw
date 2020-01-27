@@ -46,7 +46,7 @@ func Run1(cntExecuteFunction int, cntError int, args ...func() error) error {
 	for isExecute {
 		for _, v := range args {
 			goroutines <- struct{}{}
-			if cntErrorCurrent >= int32(cntError) {
+			if atomic.LoadInt32(&cntErrorCurrent) >= int32(cntError) {
 				isExecute = false
 				close(goroutines)
 				return fmt.Errorf("колво ошибок %v из %v. Было запушенно горутин %v, выполненно %v", cntErrorCurrent, cntError, cntExecute, cntExecuteGoroutine)
