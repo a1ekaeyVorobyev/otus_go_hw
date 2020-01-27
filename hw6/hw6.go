@@ -58,23 +58,24 @@ func (l *List) Remove(remoteItem *Item) error {
 }
 
 func (l *List) PushBack(data interface{}) {
-	temp := l.First()
+
+	temp := l.Last()
 	item := new(Item)
 	item.data = data
 	item.prev = temp
-	l.head = item
+	l.tail = item
 	if temp != nil {
 		temp.next = item
 	}
-	if l.Last() == nil {
-		l.tail = item
+	if l.First() == nil {
+		l.head = item
 	}
 	item.list = l
 	l.Size++
 }
 
 func (l *List) PushFont(data interface{}) {
-	temp := l.Last()
+	temp := l.First()
 	item := new(Item) //:= new(Item)
 	item.data = data
 	item.prev = nil
@@ -82,9 +83,9 @@ func (l *List) PushFont(data interface{}) {
 	if temp != nil {
 		temp.prev = item
 	}
-	l.tail = item
-	if l.First() == nil {
-		l.head = item
+	l.head = item
+	if l.Last() == nil {
+		l.tail = item
 	}
 	item.list = l
 	l.Size++

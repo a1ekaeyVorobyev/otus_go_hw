@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("Первый =", elemFirst.Value())
 
 	fmt.Print("\nВыводим список с конца :	")
-	for e := s.Last(); e != nil; e = e.Next() {
+	for e := s.Last(); e != nil; e = e.Prev() {
 		fmt.Print(e.Value(), ";")
 	}
 
@@ -31,7 +31,7 @@ func main() {
 	s.PushFont("sds")
 
 	fmt.Print("Выводим список с конца :	")
-	for e := s.Last(); e != nil; e = e.Next() {
+	for e := s.Last(); e != nil; e = e.Prev() {
 		fmt.Print(e.Value(), ";")
 	}
 
@@ -39,12 +39,12 @@ func main() {
 	s.PushBack(15)
 
 	fmt.Print("Выводим список с конца :	")
-	for e := s.Last(); e != nil; e = e.Next() {
+	for e := s.Last(); e != nil; e = e.Prev() {
 		fmt.Print(e.Value(), ";")
 	}
 	fmt.Print("\nВыводим список с начала :	")
 
-	for e := s.First(); e != nil; e = e.Prev() {
+	for e := s.First(); e != nil; e = e.Next() {
 		fmt.Print(e.Value(), ";")
 	}
 
@@ -61,12 +61,12 @@ func main() {
 	}
 	fmt.Print("Выводим список с конца : 	")
 
-	for e := s.Last(); e != nil; e = e.Next() {
+	for e := s.Last(); e != nil; e = e.Prev() {
 		fmt.Print(e.Value(), ";")
 	}
 	fmt.Print("\nВыводим список с начала : 	")
 
-	for e := s.First(); e != nil; e = e.Prev() {
+	for e := s.First(); e != nil; e = e.Next() {
 		fmt.Print(e.Value(), ";")
 	}
 	fmt.Print("\nУдаляем элемент из другого списка : 	")
