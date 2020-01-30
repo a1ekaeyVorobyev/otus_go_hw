@@ -28,17 +28,18 @@ func (i *Item) Value() interface{} {
 type List struct {
 	head *Item
 	tail *Item
-	Size int
+	size int
 }
 
 func (l *List) Len() int {
-	return l.Size
+	return l.size
 }
 
 func (l *List) Remove(remoteItem *Item) error {
 	if l != remoteItem.list {
 		return fmt.Errorf("данный элемент не пренадлежит этому списку")
 	}
+	remoteItem.list = nil
 	prev := remoteItem.prev
 	next := remoteItem.next
 	if prev != nil {
@@ -53,7 +54,7 @@ func (l *List) Remove(remoteItem *Item) error {
 		}
 		next.prev = prev
 	}
-	l.Size--
+	l.size--
 	return nil
 }
 
@@ -71,7 +72,7 @@ func (l *List) PushBack(data interface{}) {
 		l.head = item
 	}
 	item.list = l
-	l.Size++
+	l.size++
 }
 
 func (l *List) PushFont(data interface{}) {
@@ -88,7 +89,7 @@ func (l *List) PushFont(data interface{}) {
 		l.tail = item
 	}
 	item.list = l
-	l.Size++
+	l.size++
 }
 
 func (l *List) First() *Item {
@@ -101,6 +102,6 @@ func (l *List) Last() *Item {
 
 func List_New() *List {
 	l := new(List)
-	l.Size = 0
+	l.size = 0
 	return l
 }
