@@ -36,6 +36,9 @@ func (l *List) Len() int {
 }
 
 func (l *List) Remove(remoteItem *Item) error {
+	if remoteItem.list  == nil {
+		return fmt.Errorf("данный элемент  уже удален")
+	}
 	if l != remoteItem.list {
 		return fmt.Errorf("данный элемент не пренадлежит этому списку")
 	}
