@@ -40,7 +40,7 @@ func (l *List) Remove(remoteItem *Item) error {
 		return fmt.Errorf("данный элемент  уже удален")
 	}
 	if l != remoteItem.list {
-		return fmt.Errorf("данный элемент не пренадлежит этому списку")
+		return fmt.Errorf("данный элемент не принадлежит этому списку")
 	}
 	remoteItem.list = nil
 	prev := remoteItem.prev
