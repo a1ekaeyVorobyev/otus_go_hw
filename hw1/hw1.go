@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func CheckConnectionNTPServer(hostName string, port string,typeConnection string) (bool, error) {
+func CheckConnectionNTPServer(hostName string, port string, typeConnection string) (bool, error) {
 	seconds := 5
 	timeOut := time.Duration(seconds) * time.Second
 	_, err := net.DialTimeout("udp", hostName+":"+port, timeOut)
@@ -19,7 +19,7 @@ func CheckConnectionNTPServer(hostName string, port string,typeConnection string
 func GetTime(hostName string) (time.Time, error) {
 	portNum := "123"
 	t := time.Now()
-	_, err := CheckConnectionNTPServer(hostName, portNum,"udp")
+	_, err := CheckConnectionNTPServer(hostName, portNum, "udp")
 	if err != nil {
 		return t, err
 	}
@@ -30,4 +30,3 @@ func GetTime(hostName string) (time.Time, error) {
 	t = time.Now().Add(response.ClockOffset)
 	return t, nil
 }
-
