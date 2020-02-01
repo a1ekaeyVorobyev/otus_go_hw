@@ -23,13 +23,13 @@ func UnPackString(s string) (string, error) {
 	v := []rune(s)
 	index := 0
 	isSkype := false
-	if unicode.IsDigit(v[0])  {
+	if unicode.IsDigit(v[0]) {
 		return "", fmt.Errorf("Не верный формат")
 	}
 
 	for i := 0; i < len(v); i++ {
 		r := v[i]
-		if i == 0  {
+		if i == 0 {
 			continue
 		}
 		if r == '\\' && !isSkype {
