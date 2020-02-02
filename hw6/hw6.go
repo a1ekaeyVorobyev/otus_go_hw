@@ -47,16 +47,19 @@ func (l *List) Remove(remoteItem *Item) error {
 	next := remoteItem.next
 	if prev != nil {
 		prev.next = next
+	}else{
+		l.head = next
 	}
 	if next != nil {
 		next.prev = prev
+	}else{
+		l.tail = prev
 	}
 	l.size--
 	return nil
 }
 
 func (l *List) PushBack(data interface{}) {
-
 	temp := l.Last()
 	item := new(Item)
 	item.data = data
