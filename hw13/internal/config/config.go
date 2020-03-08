@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	LogLevel string `yaml:"LogLevel"`
+	FileName string `yaml:"FileName"`
 }
 
 func ReadFromFile(file string) (Config, error) {
