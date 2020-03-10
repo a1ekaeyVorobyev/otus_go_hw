@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="go run" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false">
     <module name="otus_go_hw" />
-    <working_directory value="$PROJECT_DIR$" />
+    <working_directory value="$PROJECT_DIR$/hw2" />
     <go_parameters value="-i" />
     <kind value="DIRECTORY" />
-    <directory value="$PROJECT_DIR$/hw8/example" />
+    <directory value="$PROJECT_DIR$/hw2/example" />
     <method v="2" />
   </configuration>
 </component>

@@ -68,7 +68,7 @@ func Copy(from string, to string, limit int, offset int, rewriteFile bool) error
 		return errors.New("sizeFile <offset ")
 	}
 	if int(sizeFile) <= bufferSize{
-		bufferSize = bufferSize/int(sizeFile)/100zzz
+		bufferSize = bufferSize/int(sizeFile)/100
 	}
 	bar := pb.New64(sizeFile - int64(bufferSize))
 	bar.Add(offset)
