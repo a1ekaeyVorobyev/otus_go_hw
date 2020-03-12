@@ -13,7 +13,7 @@ func TestNewCalendarHaveNoEvents(t *testing.T) {
 	InFile := storage.InFile{}
 	InFile.Init()
 	InFile.Clear()
-	calendar := Calendar{Storage:&InFile}
+	calendar := Calendar{Storage: &InFile}
 
 	events, err := calendar.GetAllEvents()
 	if err != ErrNoEventsInStorage || len(events) != 0 {
@@ -37,12 +37,12 @@ func TestAddEventSuccess(t *testing.T) {
 		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 		err := calendar.AddEvent(event)
 		if err != nil {
-			t.Error("Can't add event to storage")
+			t.Error("Can't add event")
 		}
 	}
 	events, err := calendar.GetAllEvents()
 	if err != nil || len(events) != 10 {
-		t.Error("In storage not 10 event")
+		t.Error("In storage have not 10 event")
 	}
 }
 
@@ -62,19 +62,19 @@ func TestDeleteEventSuccess(t *testing.T) {
 		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 		err := calendar.AddEvent(event)
 		if err != nil {
-			t.Error("Can't add event to storage")
+			t.Error("Can't add event ")
 		}
 	}
 	events, _ := calendar.GetAllEvents()
 	for _, v := range events {
-		err := calendar.DelEvent(v.Id)
+		err := calendar.DeleteEvent(v.Id)
 		if err != nil {
-			t.Error("Can't del event from storage")
+			t.Error("Can't delete event")
 		}
 	}
 
 	if calendar.CountRecord() != 0 {
-		t.Error("In storage exist events")
+		t.Error("In storage have events")
 	}
 }
 
@@ -82,35 +82,30 @@ func TestAddDateIntervalBusy(t *testing.T) {
 	var err error
 	inMemory := storage.InFile{}
 	inMemory.Init()
+	inMemory.Clear()
 	calendar := Calendar{Storage: &inMemory}
+	dateStart := time.Date(2020, 2, 1, 11, 0, 0, 0, time.UTC)
+	//dateEnd := time.Date(2020, 1, 2, 11, 0, 0, 0, time.UTC)
+	event1, _ := event.CreateEvent(dateStart.Format(time.RFC3339), "", "Event 1", "Start event", 1, event.EnumTypeDuration.Day)
 
-	event1, _ := event.CreateEvent("2006-01-02T15:00:00Z", "2006-01-02T16:00:00Z", "Event 1", "Some Desc1", 0, 0)
-	event2, _ := event.CreateEvent("2006-01-02T16:00:00Z", "2006-01-02T17:00:00Z", "Event 2", "Some Desc2", 0, 0)
-	event3, _ := event.CreateEvent("2006-01-02T18:00:00Z", "2006-01-02T19:00:00Z", "Event 3", "Some Desc3", 0, 0)
+	event2, _ := event.CreateEvent(dateStart.Format(time.RFC3339), "", "Event 1", "Start event", 1, event.EnumTypeDuration.Hour)
+	event3, _ := event.CreateEvent("2020-01-02T15:00:00Z", "", "Event 1", "Start event", 1, event.EnumTypeDuration.Month)
+
 	err = calendar.AddEvent(event1)
-	err = calendar.AddEvent(event2)
-	err = calendar.AddEvent(event3)
 	if err != nil {
-		t.Error("Error on add not intersection events")
+		t.Error("Error on add events")
 	}
-
-	event4, _ := event.CreateEvent("2006-01-02T16:10:00Z", "2006-01-02T16:20:00Z", "Event 4", "Some Desc4")
-	err = calendar.AddEvent(event4)
-	if err != ErrDateBusy {
+	err = calendar.AddEvent(event2)
+	if err != ErrBusy {
 		t.Error("Add not return error for busy interval")
 	}
 
-	event5, _ := event.CreateEvent("2006-01-02T10:10:00Z", "2006-01-02T22:00:00Z", "Event 5", "Some Desc5")
-	err = calendar.AddEvent(event5)
-	if err != ErrDateBusy {
+	err = calendar.AddEvent(event3)
+
+	if err != ErrBusy {
 		t.Error("Add not return error for busy interval")
 	}
 
-	event6, _ := event.CreateEvent("2006-01-02T17:10:00Z", "2006-01-02T18:10:00Z", "Event 6", "Some Desc6")
-	err = calendar.AddEvent(event6)
-	if err != ErrDateBusy {
-		t.Error("Add not return error for busy interval")
-	}
 }
 
 func TestGetEvent(t *testing.T) {
@@ -168,11 +163,11 @@ func TestEditEvent(t *testing.T) {
 
 	err := calendar.EditEvent(editEvent)
 	if err != nil {
-		t.Error("Got not expected error on edit")
+		t.Error(" expected error after edit")
 	}
 
 	eventFromStorageAfterEdit, _ := calendar.GetEvent(r)
 	if eventFromStorageAfterEdit != editEvent {
-		t.Error("Edit Event not ident Event in storage after edit")
+		t.Error("Edit Event not id Event  after edit")
 	}
 }

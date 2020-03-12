@@ -24,7 +24,7 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
-func (s *InFile) SaveEvents() error{
+func (s *InFile) SaveEvents() error {
 
 	if fileExists(fileName) {
 		err := os.Remove(fileName)
@@ -45,7 +45,7 @@ func (s *InFile) SaveEvents() error{
 	return nil
 }
 
-func (s *InFile)loadEvents() error {
+func (s *InFile) loadEvents() error {
 	if !fileExists(fileName) {
 		return nil
 	}
@@ -113,14 +113,12 @@ func (s *InFile) Edit(e event.Event) error {
 
 func (s *InFile) IsBusy(newEvent event.Event) (bool, error) {
 	for id, Event := range s.Events {
-		if newEvent.Id == id {
+		if newEvent.Id == id && newEvent.Id != 0 {
 			continue
 		}
-		//NewEvents StartDate between Event.StartTime and Event.EndTime
 		if newEvent.StartTime.Before(Event.StartTime) && newEvent.EndTime.After(Event.EndTime) {
 			return true, nil
 		}
-		//NewEvents EndTime between Event.StartTime and Event.EndTime
 		if newEvent.EndTime.After(Event.StartTime) && newEvent.EndTime.Before(Event.EndTime) {
 			return true, nil
 		}
@@ -128,6 +126,6 @@ func (s *InFile) IsBusy(newEvent event.Event) (bool, error) {
 	return false, nil
 }
 
-func (s *InFile) CountRecord()int{
+func (s *InFile) CountRecord() int {
 	return len(s.Events)
 }

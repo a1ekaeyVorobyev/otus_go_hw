@@ -20,14 +20,14 @@ func main() {
 		os.Exit(2)
 	}
 
-	logger,f := logger.GetLogger(config)
-	if f != nil{
+	logger, f := logger.GetLogger(config)
+	if f != nil {
 		defer f.Close()
 	}
 	logger.Debug("Test")
 	inMemory := storage.InFile{}
 	inMemory.Init()
-	defer func(){
+	defer func() {
 		err := inMemory.SaveEvents()
 		logger.Error(err)
 	}()
@@ -35,4 +35,3 @@ func main() {
 	fmt.Println("Hello, playground")
 	fmt.Println(config)
 }
-

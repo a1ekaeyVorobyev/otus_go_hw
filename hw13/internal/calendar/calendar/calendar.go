@@ -15,14 +15,14 @@ type Calendar struct {
 
 func (c Calendar) AddEvent(e event.Event) error {
 	c.Logger.Debug("Try add to storage, Event:", e)
-	isBusy, err := c.Storage.isBusy(e)
+	isBusy, err := c.Storage.IsBusy(e) //.isBusy(e)
 	if err != nil {
 		c.Logger.Debug("Fail to check interval for Event, Error:", err)
 		return err
 	}
 	if isBusy {
 		c.Logger.Debug("Interval is busy for Event:", e)
-		return ErrNoEventsInStorage
+		return ErrBusy
 	}
 	err = c.Storage.Add(e)
 	if err != nil {
@@ -33,7 +33,7 @@ func (c Calendar) AddEvent(e event.Event) error {
 	return nil
 }
 
-func (c Calendar) DelEvent(id int) error {
+func (c Calendar) DeleteEvent(id int) error {
 	c.Logger.Debug("Try del form storage Event, with Id:", id)
 	err := c.Storage.Del(id)
 	if err != nil {
@@ -72,7 +72,7 @@ func (c Calendar) GetAllEvents() ([]event.Event, error) {
 
 func (c Calendar) EditEvent(e event.Event) error {
 	c.Logger.Debug("Try edit Event in storage")
-	isBusy, err := c.Storage.IntervalIsBusy(e)
+	isBusy, err := c.Storage.IsBusy(e)
 	if err != nil {
 		c.Logger.Debug("Fail to check interval for Event, Error:", err)
 		return err
@@ -93,4 +93,3 @@ func (c Calendar) EditEvent(e event.Event) error {
 func (c Calendar) CountRecord() int {
 	return c.Storage.CountRecord()
 }
-

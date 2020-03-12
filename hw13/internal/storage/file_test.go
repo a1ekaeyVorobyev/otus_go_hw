@@ -8,7 +8,6 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/calendar/event"
 )
 
-//func (t Time) AddDate(years int, months int, days int) Time
 func TestSaveAndLoadFile(t *testing.T) {
 	InFile := InFile{}
 	InFile.Init()
@@ -23,7 +22,7 @@ func TestSaveAndLoadFile(t *testing.T) {
 		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 		err := InFile.Add(event)
 		if err != nil {
-			t.Error("Can't add event to storage")
+			t.Error("Can't add event")
 		}
 	}
 	events, err := InFile.GetAll()
@@ -46,7 +45,7 @@ func TestEmptyStorageHaveNoEvents(t *testing.T) {
 	InFile.Clear()
 	events, err := InFile.GetAll()
 	if err != nil || len(events) != 0 {
-		t.Error("In new storage exist events")
+		t.Error("In new storage have events")
 	}
 }
 
@@ -57,7 +56,7 @@ func TestAddEventSuccess(t *testing.T) {
 	event, _ := event.CreateEvent("2020-01-02T11:00:00Z", "2020-01-02T12:00:00Z", "Event 1", "Start event", 0, 0)
 	err := InFile.Add(event)
 	if err != nil {
-		t.Error("Can't add event to storage")
+		t.Error("Can't add event ")
 	}
 
 	events, err := InFile.GetAll()
@@ -87,11 +86,11 @@ func TestDeleteEventSuccess(t *testing.T) {
 	for _, v := range events {
 		err := InFile.Del(v.Id)
 		if err != nil {
-			t.Error("Can't del event from storage")
+			t.Error("Can't delete event")
 		}
 	}
 	if InFile.CountRecord() != 0 {
-		t.Error("In storage exist events")
+		t.Error("In storage have events")
 	}
 }
 
@@ -109,16 +108,16 @@ func TestIslBusy(t *testing.T) {
 		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 		err := InFile.Add(event)
 		if err != nil {
-			t.Error("Can't add event to storage")
+			t.Error("Can't add event")
 		}
 	}
 	events, _ := InFile.GetAll()
-	for _,v:= range events{
-		ok,err := InFile.IsBusy(v)
+	for _, v := range events {
+		ok, err := InFile.IsBusy(v)
 		if ok {
 			t.Error("This events have in memory")
 		}
-		if err!=nil{
+		if err != nil {
 			t.Error(err.Error())
 		}
 	}
@@ -135,12 +134,12 @@ func TestGetEvent(t *testing.T) {
 	event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 	err := InFile.Add(event)
 	if err != nil {
-		t.Error("Can't add event to storage")
+		t.Error("Can't add event")
 	}
 
 	getEvent, err := InFile.Get(0)
 	if err != nil {
-		t.Error("Get error, for exist event")
+		t.Error("Get error event")
 	}
 
 	if getEvent.StartTime != event.StartTime ||
@@ -149,7 +148,7 @@ func TestGetEvent(t *testing.T) {
 		getEvent.Note != event.Note ||
 		getEvent.Duration != event.Duration ||
 		getEvent.TypeDuration != event.TypeDuration {
-		t.Error("Event in storage not ident")
+		t.Error("Event in storage")
 	}
 }
 
@@ -167,7 +166,7 @@ func TestEditEvent(t *testing.T) {
 		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
 		err := InFile.Add(event)
 		if err != nil {
-			t.Error("Can't add event to storage")
+			t.Error("Can't add event")
 		}
 	}
 	rand.Seed(time.Now().UnixNano())
@@ -189,6 +188,23 @@ func TestEditEvent(t *testing.T) {
 	//check
 	eventAfterEdit, _ := InFile.Get(r)
 	if eventAfterEdit != editEvent {
-		t.Error("Edit Event not ident Event in storage after edit")
+		t.Error("Edit Event not id Event after edit")
+	}
+}
+
+func TestAddDurrationEventSuccess(t *testing.T) {
+	InFile := InFile{}
+	InFile.Init()
+	InFile.Clear()
+	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
+	dateEnd := time.Date(2020, 1, 2, 11, 0, 0, 0, time.UTC)
+	event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), "", "Event 1", "Start event", 1, event.EnumTypeDuration.Day)
+	err := InFile.Add(event)
+	if err != nil {
+		t.Error("Can't add event")
+	}
+	events, err := InFile.Get(0)
+	if err != nil || events.EndTime != dateEnd {
+		t.Error("Error calc dateEnd")
 	}
 }

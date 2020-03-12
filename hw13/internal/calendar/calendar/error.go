@@ -7,6 +7,6 @@ func (e BusinessError) Error() string {
 }
 
 const (
-	ErrBusy          = BusinessError("Date and Time  already busy by another event")
+	ErrBusy              = BusinessError("Date and Time  already busy by another event")
 	ErrNoEventsInStorage = BusinessError("No events in storage")
 )

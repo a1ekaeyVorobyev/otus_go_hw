@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func GetLogger(c config.Config) (logrus.Logger, *os.File ){
+func GetLogger(c config.Config) (logrus.Logger, *os.File) {
 	logger := logrus.Logger{}
 	switch c.LogLevel {
 	case "info":
@@ -20,16 +20,16 @@ func GetLogger(c config.Config) (logrus.Logger, *os.File ){
 	}
 	formatter := logrus.JSONFormatter{}
 	logger.SetFormatter(&formatter)
-	if c.FileName !=""{
+	if c.FileName != "" {
 		fmt.Println(c.FileName)
-		f, err := os.OpenFile(c.FileName, os.O_APPEND | os.O_CREATE | os.O_RDWR, 0666)
+		f, err := os.OpenFile(c.FileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 		if err != nil {
 			fmt.Printf("error opening file: %v", err)
 		}
 		logger.SetOutput(f)
-		return logger,f
-	}else {
+		return logger, f
+	} else {
 		logger.SetOutput(os.Stdout)
 	}
-	return logger,nil
+	return logger, nil
 }
