@@ -15,7 +15,7 @@ type Calendar struct {
 
 func (c Calendar) AddEvent(e event.Event) error {
 	c.Logger.Debug("Try add to storage, Event:", e)
-	isBusy, err := c.Storage.IsBusy(e) //.isBusy(e)
+	isBusy, err := c.Storage.IsBusy(e)
 	if err != nil {
 		c.Logger.Debug("Fail to check interval for Event, Error:", err)
 		return err

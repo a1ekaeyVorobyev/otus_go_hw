@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/calendar/event"
 )
@@ -12,6 +13,7 @@ import (
 const fileName = "Events.dat"
 
 type InFile struct {
+	sync.Mutex
 	Events map[int]event.Event
 }
 
@@ -25,7 +27,8 @@ func fileExists(filename string) bool {
 }
 
 func (s *InFile) SaveEvents() error {
-
+	s.Lock()
+	defer s.Unlock()
 	if fileExists(fileName) {
 		err := os.Remove(fileName)
 		if err != nil {
@@ -46,6 +49,8 @@ func (s *InFile) SaveEvents() error {
 }
 
 func (s *InFile) loadEvents() error {
+	s.Lock()
+	defer s.Unlock()
 	if !fileExists(fileName) {
 		return nil
 	}
@@ -68,17 +73,23 @@ func (s *InFile) Init() {
 }
 
 func (s *InFile) Add(e event.Event) error {
+	s.Lock()
+	defer s.Unlock()
 	e.Id = len(s.Events)
 	s.Events[len(s.Events)] = e
 	return nil
 }
 
 func (s *InFile) Del(id int) error {
+	s.Lock()
+	defer s.Unlock()
 	delete(s.Events, id)
 	return nil
 }
 
 func (s *InFile) Clear() error {
+	s.Lock()
+	defer s.Unlock()
 	s.Events = make(map[int]event.Event)
 	return nil
 }
@@ -103,6 +114,8 @@ func (s *InFile) GetAll() ([]event.Event, error) {
 }
 
 func (s *InFile) Edit(e event.Event) error {
+	s.Lock()
+	defer s.Unlock()
 	_, exist := s.Events[e.Id]
 	if !exist {
 		return errors.New(fmt.Sprintf("Event with id: %d not found", e.Id))

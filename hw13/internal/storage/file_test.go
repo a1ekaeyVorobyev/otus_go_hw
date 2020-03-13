@@ -185,7 +185,6 @@ func TestEditEvent(t *testing.T) {
 	InFile.SaveEvents()
 	InFile.Clear()
 	InFile.Init()
-	//check
 	eventAfterEdit, _ := InFile.Get(r)
 	if eventAfterEdit != editEvent {
 		t.Error("Edit Event not id Event after edit")
