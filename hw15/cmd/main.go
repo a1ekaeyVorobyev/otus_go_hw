@@ -40,9 +40,9 @@ func main() {
 		done <- true
 	}()
 
-	_ = calendar.Calendar{Config: config, Storage: &inMemory, Logger: logger}
+	_ = calendar.Calendar{Config: config, Storage: &inMemory, Logger: &logger}
 
-	go web.RunServer(config, logger)
+	go web.RunServer(config, &logger)
 
 exit:
 	for {

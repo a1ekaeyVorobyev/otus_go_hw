@@ -10,7 +10,7 @@ import (
 type Calendar struct {
 	Config  config.Config
 	Storage storage.Interface
-	Logger  logrus.Logger
+	Logger  *logrus.Logger
 }
 
 func (c Calendar) AddEvent(e event.Event) error {

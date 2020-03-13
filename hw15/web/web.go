@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func RunServer(config config.Config, logger logrus.Logger) {
+func RunServer(config config.Config, logger *logrus.Logger) {
 	adress := config.Host + ":" + config.Port
 	logger.Info("Start web server: ", adress)
 
@@ -28,7 +28,7 @@ func RunServer(config config.Config, logger logrus.Logger) {
 	}
 }
 
-func logRequest(handler http.Handler, logger logrus.Logger) http.Handler {
+func logRequest(handler http.Handler, logger *logrus.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger.Info(fmt.Sprintf("%s %s %s", r.RemoteAddr, r.Method, r.URL))
 		handler.ServeHTTP(w, r)
