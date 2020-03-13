@@ -6,11 +6,7 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/storage"
 	"os"
-
-	// "github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/config"
-	//"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/logger"
-	// "github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/storage"
 )
 
 func main() {
