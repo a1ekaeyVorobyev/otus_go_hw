@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw13/internal/storage"
 	"os"
@@ -31,7 +32,5 @@ func main() {
 		err := inMemory.SaveEvents()
 		logger.Error(err)
 	}()
-	//_ = calendar.Calendar{Config: config, Storage: &inMemory, Logger: logger}
-	fmt.Println("Hello, playground")
-	fmt.Println(config)
+	_ = calendar.Calendar{Config: config, Storage: &inMemory, Logger: logger}
 }
