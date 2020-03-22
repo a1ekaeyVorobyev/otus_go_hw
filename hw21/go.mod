@@ -1,4 +1,4 @@
-module github.com/a1ekaeyVorobyev/otus_go_hw/hw15
+module github.com/a1ekaeyVorobyev/otus_go_hw/hw21
 
 go 1.13
 

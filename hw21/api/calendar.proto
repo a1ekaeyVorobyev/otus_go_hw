@@ -1,9 +1,9 @@
 syntax = "proto3";
 
+package proto;
+
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-
-option go_package = "hw21";
 
 service Calendar {
     rpc AddEvent (Event) returns (google.protobuf.Empty) {

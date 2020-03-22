@@ -11,6 +11,7 @@ type Config struct {
 	Port string `yaml:"Port"`
 	LogLevel string `yaml:"LogLevel"`
 	FileName string `yaml:"FileName"`
+	GrpcServer string `yaml:"GrpcServer"`
 }
 
 func ReadFromFile(file string) (Config, error) {

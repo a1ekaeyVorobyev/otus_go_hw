@@ -1,68 +1,69 @@
-package grpc
+package grps
 
 import (
 	"context"
-	"net"
-	"time"
+	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
 
+
+	"time"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar/protobuf"
-	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
+	"github.com/golang/protobuf/ptypes/empty"
 )
 
 type Server struct {
 	Config   config.Config
 	Logger   *logrus.Logger
 	Calendar *calendar.Calendar
-	server   *grpc.Server
+	//server   *grpc.Server
 }
 
 type CalendarServerGrpc struct {
 	log      *logrus.Logger
-	calendar *calendar
+	calendar *calendar.Calendar
 }
 
 
 func (s *Server) Run() {
-	s.Logger.Info("Start GRPC server:", s.Config.GrpcListen)
+	s.Logger.Info("Start GRPC server:", s.Config.GrpcServer)
 
-	listener, err := net.Listen("tcp", s.Config.GrpcListen)
-	if err != nil {
-		s.Logger.Fatalf("failed to listen: %v", err)
-	}
+	//listener, err := net.Listen("tcp", s.Config.GrpcServer)
+	//if err != nil {
+	//	s.Logger.Fatalf("failed to listen: %v", err)
+	//}
 
-	s.server = grpc.NewServer()
-	protobuf.RegisterCalendarServer(s.server, s)
+	//s.server = grpc.NewServer()
+	//protobuf.RegisterCalendarServer(s.server, s)
 
-	err = s.server.Serve(listener)
-	if err != nil {
-		s.Logger.Fatalf("failed to run grpc server: %v", err)
-	}
+	//err = s.server.Serve(listener)
+	//if err != nil {
+	//	s.Logger.Fatalf("failed to run grpc server: %v", err)
+	//}
 }
 
 func (s *Server) Shutdown() {
 	s.Logger.Info("Graceful shutdown GRPC server...")
-	s.server.GracefulStop()
+	//s.server.GracefulStop()
 }
 
 
-func (s *Server) AddEvent(ctx context.Context, grpcE *protobuf.Event) (*empty.Empty, error) {
-	s.Logger.Debug("Income gRPC AddEvent() event: ", grpcE)
+func (s *Server) AddEvent(ctx context.Context, e *proto.Event) (*empty.Empty, error) {
+	s.Logger.Debug("Income gRPC AddEvent() event: ", e)
 	err := s.Calendar.AddEvent(event.Event{
-		StartTime:   time.Unix(grpcE.StartTime, 0),
-		EndTime:     time.Unix(grpcE.EndTime, 0),
-		Title:       grpcE.Title,
-		Description: grpcE.Description,
+		StartTime:		Timestamp(e.StartTime),
+		EndTime:		Timestamp(e.EndTime),
+		Duration: 		int(e.Duration),
+		TypeDuration:	int(e.Typeduration),
+		Title:			e.Title,
+		Note: 			e.Note,
 	})
 
 	return &empty.Empty{}, err
 }
 
-func (s *Server) GetEvent(ctx context.Context, grpcId *protobuf.Id) (*protobuf.Event, error) {
+func (s *Server) GetEvent(ctx context.Context, grpcId *proto.Id) (*proto.Event, error) {
 	s.Logger.Debug("Income gRPC GetEvent() id:", grpcId)
 	calendarEvent, err := s.Calendar.GetEvent(int(grpcId.Id))
 
@@ -75,13 +76,13 @@ func (s *Server) GetEvent(ctx context.Context, grpcId *protobuf.Id) (*protobuf.E
 	}, err
 }
 
-func (s *Server) DelEvent(ctx context.Context, grpcId *protobuf.Id) (*empty.Empty, error) {
+func (s *Server) DeleteEvent(ctx context.Context, grpcId *proto.Id) (*empty.Empty, error) {
 	s.Logger.Debug("Income gRPC DelEvent() id:", grpcId)
 
 	return &empty.Empty{}, s.Calendar.DelEvent(int(grpcId.Id))
 }
 
-func (s *Server) EditEvent(ctx context.Context, grpcE *protobuf.Event) (*empty.Empty, error) {
+func (s *Server) EditEvent(ctx context.Context, grpcE *proto.Event) (*empty.Empty, error) {
 	s.Logger.Debug("Income gRPC EditEvent() event:", grpcE)
 
 	err := s.Calendar.EditEvent(event.Event{
@@ -94,15 +95,15 @@ func (s *Server) EditEvent(ctx context.Context, grpcE *protobuf.Event) (*empty.E
 	return &empty.Empty{}, err
 }
 
-func (s *Server) GetAllEvents(ctx context.Context, ev *empty.Empty) (*protobuf.Events, error) {
+func (s *Server) GetAllEvents(ctx context.Context, ev *empty.Empty) (*proto.Events, error) {
 	s.Logger.Debug("Income gRPC GetAllEvents()")
 	calendarEvents, err := s.Calendar.GetAllEvents()
 	l := len(calendarEvents)
 
-	protobufEvents := make([]*protobuf.Event, 0, l)
+	protobufEvents := make([]*proto.Event, 0, l)
 
 	for _, calendarEvent := range calendarEvents {
-		protobufEvent := protobuf.Event{
+		protobufEvent := proto.Event{
 			Id:          int32(calendarEvent.Id),
 			StartTime:   calendarEvent.StartTime.Unix(),
 			EndTime:     calendarEvent.EndTime.Unix(),
@@ -112,5 +113,5 @@ func (s *Server) GetAllEvents(ctx context.Context, ev *empty.Empty) (*protobuf.E
 		protobufEvents = append(protobufEvents, &protobufEvent)
 	}
 
-	return &protobuf.Events{Events: protobufEvents}, err
+	return &proto.Events{Events: protobufEvents}, err
 }
