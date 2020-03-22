@@ -3,32 +3,29 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
+	_ "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
 	"os"
 	"os/signal"
 	"syscall"
-	_"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/grpcserver"
-
 )
-
 
 func main() {
 	sigs := make(chan os.Signal, 1)
-	var cFile string
-	flag.StringVar(&cFile, "config", "config/config.yaml", "Config file")
+	var configFile string
+	flag.StringVar(&configFile, "config", "config/config.yaml", "Config file")
 	flag.Parse()
-	fmt.Println(cFile)
-	if cFile == "" {
-		_, _ = fmt.Fprint(os.Stderr, "Not set config file")
+	if configFile == "" {
+		_, _ = fmt.Fprint(os.Stderr, "don't config file")
 		os.Exit(2)
 	}
 
-	conf, err := config.ReadFromFile(cFile)
+	conf, err := config.ReadFromFile(configFile)
 	if err != nil {
 		_, _ = fmt.Fprint(os.Stderr, err)
 		os.Exit(2)
@@ -44,16 +41,15 @@ func main() {
 
 	inFile := storage.InFile{}
 	inFile.Init()
-
-	fmt.Println("count Event =", inFile.CountRecord())
 	cal := calendar.Calendar{Config: conf, Storage: &inFile, Logger: &logger}
-	fmt.Println("count Event =", cal.Storage.CountRecord())
-	//grpcServer := 	grps.Server{conf,&logger,&cal}
-	grpcServer := grpcserver.Server{conf,&logger,&cal}
+	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
+	grpcServer := grpcserver.Server{}
+	grpcServer.Calendar = &cal
+	grpcServer.Config = conf
+	grpcServer.Logger = &logger
 	go web.RunServer(conf, &logger)
 	go grpcServer.Run()
 
-	logger.Infof("Got signal from OS: %v. Exit.", <-osSignals)
 	defer grpcServer.Shutdown()
 
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)

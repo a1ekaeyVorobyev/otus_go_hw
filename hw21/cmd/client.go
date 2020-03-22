@@ -1,96 +1,97 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"flag"
 	"fmt"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
+	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 	"log"
-	"net"
 	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
 func main() {
-
-	if len(os.Args) < 3 {
-		fmt.Printf("Set adress server and port: example 127.0.0.1  25 --timeout=10s , default timeout = 10s")
-		os.Exit(2)
-	}
-	host := os.Args[1]
-	port := os.Args[2]
-
-	var timeout int
-	flag.IntVar(&timeout, "timeout", 10, "time out in seconds")
+	var configFile string
+	flag.StringVar(&configFile, "config", "config/config.yaml", "Config file")
 	flag.Parse()
-
-	connect, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), time.Second*time.Duration(timeout))
-	defer connect.Close()
-	if err != nil {
-		fmt.Printf("Can't connect to telnet server: %v\n", err)
+	if configFile == "" {
+		_, _ = fmt.Fprint(os.Stderr, "Don't config file")
 		os.Exit(2)
 	}
-	ctx, cancel := context.WithCancel(context.Background())
-	ch := make(chan bool, 1)
-	go hanlerRead(ctx, connect, ch)
-	go handlerwriter(ctx, connect, ch)
-	go func() {
-		sigs := make(chan os.Signal, 1)
-		signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
-		<-sigs
-		cancel()
-	}()
-exit:
-	for {
-		select {
-		case <-ctx.Done():
-			break exit
-		case <-ch:
-			break exit
-		}
 
+	conf, err := config.ReadFromFile(configFile)
+	if err != nil {
+		_, _ = fmt.Fprint(os.Stderr, err)
+		os.Exit(2)
 	}
-	log.Println("Exit telnet.")
-}
-
-func hanlerRead(ctx context.Context, connect net.Conn, ch chan bool) {
-	defer func() { ch <- true }()
-	scanner := bufio.NewScanner(os.Stdin)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			if !scanner.Scan() {
-				return
-			}
-			str := scanner.Text()
-			_, err := connect.Write([]byte(fmt.Sprintf("%s\n", str)))
-			if err != nil {
-				return
-			}
-			if str == "quit" || str == "exit" {
-				return
-			}
+	logger, f := logger.GetLogger(conf)
+	if f != nil {
+		defer f.Close()
+	}
+	ctxConn, _ := context.WithTimeout(context.Background(), time.Second*10)
+	conn, err := grpc.DialContext(ctxConn, conf.GrpcServer, []grpc.DialOption{grpc.WithInsecure(), grpc.WithBlock()}...)
+	if err != nil {
+		log.Fatalln("Can't connect to grpc server, error: ", err)
+	}
+	client := proto.NewCalendarClient(conn)
+	ctx := context.Background()
+	//add 10 record
+	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
+	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
+	for i := 0; i < 10; i++ {
+		dateStart.AddDate(0, 0, 1)
+		dateEnd.AddDate(0, 0, 1)
+		title := "Event " + string(i)
+		note := "This envets" + string(i) + " start:" + dateStart.Format(time.RFC3339) + " finish:" + dateEnd.Format(time.RFC3339)
+		event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
+		start, err := ptypes.TimestampProto(event.StartTime)
+		if err != nil {
+			LogOnError(&logger, "Fail on add Event", err)
+		}
+		finish, err := ptypes.TimestampProto(event.EndTime)
+		if err != nil {
+			LogOnError(&logger, "Fail on add Event", err)
+		}
+		sendGrpcEvent := proto.Event{StartTime: start, EndTime: finish, Duration: int32(event.Duration),
+			Typeduration: int32(event.TypeDuration), Title: event.Title, Note: event.Note}
+		_, err = client.AddEvent(ctx, &sendGrpcEvent)
+		if err != nil {
+			LogOnError(&logger, "Fail on add Event", err)
 		}
 	}
+
+	getGrpcEvents, err := client.GetAllEvents(ctx, &empty.Empty{})
+	if err != nil {
+		LogOnError(&logger, "Fail on GetAllEvents", err)
+	}
+
+	cnt, err := client.CountRecord(ctx, &empty.Empty{})
+	if err != nil {
+		LogOnError(&logger, "Fail on CountRecord", err)
+	}
+	logger.Info("Count events = ", cnt.Count)
+	for _, v := range getGrpcEvents.Events {
+		_, err = client.DeleteEvent(ctx, &proto.Id{Id: v.Id})
+		if err != nil {
+			LogOnError(&logger, "Fail on DeleteEvent", err)
+		}
+	}
+	cnt, err = client.CountRecord(ctx, &empty.Empty{})
+	if err != nil {
+		LogOnError(&logger, "Fail on CountRecord", err)
+	}
+	logger.Info("Count events = ", cnt.Count)
 }
 
-func handlerwriter(ctx context.Context, connect net.Conn, ch chan bool) {
-	defer func() { ch <- true }()
-	scanner := bufio.NewScanner(connect)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			if !scanner.Scan() {
-				return
-			}
-			text := scanner.Text()
-			fmt.Println(text)
-		}
+func LogOnError(log *logrus.Logger, mes string, err error) {
+	if err != nil {
+		log.Errorln(fmt.Sprintf("%s, error: %v", mes, err))
 	}
 }

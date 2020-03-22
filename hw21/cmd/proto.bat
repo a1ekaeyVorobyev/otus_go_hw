@@ -1,1 +1,0 @@
-protoc.exe -I . pkg/calendar/calendar.proto --go_out=plugins=grpc:.
