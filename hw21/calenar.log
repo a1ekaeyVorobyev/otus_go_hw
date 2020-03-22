@@ -1,0 +1,7 @@
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-13T23:35:22+03:00"}
+{"level":"info","msg":"127.0.0.1:57621 GET /","time":"2020-03-13T23:35:30+03:00"}
+{"level":"info","msg":"127.0.0.1:57621 GET /favicon.ico","time":"2020-03-13T23:35:31+03:00"}
+{"level":"info","msg":"127.0.0.1:57621 GET /hello","time":"2020-03-13T23:35:32+03:00"}
+{"level":"info","msg":"Exit service.","time":"2020-03-13T23:35:50+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-13T23:37:34+03:00"}
+{"level":"info","msg":"Exit service.","time":"2020-03-13T23:37:35+03:00"}
