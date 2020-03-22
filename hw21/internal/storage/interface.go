@@ -6,7 +6,7 @@ import (
 
 type Interface interface {
 	Add(e event.Event) error
-	Del(id int) error
+	Delete(id int) error
 	Clear() error
 	Get(id int) (event.Event, error)
 	GetAll() ([]event.Event, error)

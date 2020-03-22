@@ -35,7 +35,7 @@ func (c Calendar) AddEvent(e event.Event) error {
 
 func (c Calendar) DeleteEvent(id int) error {
 	c.Logger.Debug("Try del form storage Event, with Id:", id)
-	err := c.Storage.Del(id)
+	err := c.Storage.Delete(id)
 	if err != nil {
 		c.Logger.Debug("Fail del Event from storage:", err)
 		return err
@@ -93,3 +93,4 @@ func (c Calendar) EditEvent(e event.Event) error {
 func (c Calendar) CountRecord() int {
 	return c.Storage.CountRecord()
 }
+

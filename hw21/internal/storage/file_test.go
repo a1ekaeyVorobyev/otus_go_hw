@@ -84,7 +84,7 @@ func TestDeleteEventSuccess(t *testing.T) {
 	}
 	events, _ := InFile.GetAll()
 	for _, v := range events {
-		err := InFile.Del(v.Id)
+		err := InFile.Delete(v.Id)
 		if err != nil {
 			t.Error("Can't delete event")
 		}

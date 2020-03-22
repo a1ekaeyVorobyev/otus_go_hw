@@ -1,89 +1,69 @@
 package main
 
 import (
-	"bufio"
-	"context"
+	"flag"
 	"fmt"
-	"log"
-	"net"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grps"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
+
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
-func handleConn(conn net.Conn) {
-	defer conn.Close()
-	adress := fmt.Sprintf("Welcome to %s, friend from %s\n", conn.LocalAddr(), conn.RemoteAddr())
-	conn.Write([]byte(adress))
-
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-
-		text := scanner.Text()
-		log.Printf("Recived text: %s", text)
-		if text == "quit" || text == "exit" {
-			log.Printf("Closing connection with keypress %s", text)
-			conn.Write([]byte(fmt.Sprintf("Closing connection with keypress %s", text)))
-			conn.Close()
-			return
-		}
-
-		conn.Write([]byte(fmt.Sprintf("I get text: '%s'\n", text)))
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Printf("Error connection  %s: %v", conn.RemoteAddr(), err)
-	}
-
-	log.Printf("Closing connection %s", conn.RemoteAddr())
-
-}
-
 func main() {
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	loader, err := net.ResolveTCPAddr("tcp", "0.0.0.0:3125")
-	if err != nil {
-		log.Fatalf("Cannot listen: %v", err)
+	sigs := make(chan os.Signal, 1)
+	fmt.Println("Start")
+	var cFile string
+	flag.StringVar(&cFile, "config", "config/config.yaml", "Config file")
+	flag.Parse()
+	fmt.Println(cFile)
+	if cFile == "" {
+		_, _ = fmt.Fprint(os.Stderr, "Not set config file")
+		os.Exit(2)
 	}
-	l, err := net.ListenTCP("tcp", loader)
-	if err != nil {
-		log.Fatalf("Cannot listen: %v", err)
-	}
-	defer l.Close()
 
-	go func() {
-		sigs := make(chan os.Signal, 1)
-		signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
-		<-sigs
-		cancel()
-	}()
+	conf, err := config.ReadFromFile(cFile)
+	if err != nil {
+		_, _ = fmt.Fprint(os.Stderr, err)
+		os.Exit(2)
+	}
+
+
+	logger, f := logger.GetLogger(conf)
+	if f != nil {
+		defer f.Close()
+	}
+
+
+	osSignals := make(chan os.Signal, 1)
+	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
+
+	inFile := storage.InFile{}
+	inFile.Init()
+	fmt.Println(conf)
+
+	cal := calendar.Calendar{Config: conf, Storage: &inFile, Logger: &logger}
+	grpcServer := grpc.Server{Config: conf, Logger: &logger, Calendar: &cal}
+
+	go web.RunServer(conf, &logger)
+	go grpcServer.Run()
+
+	logger.Infof("Got signal from OS: %v. Exit.", <-osSignals)
+	defer grpcServer.Shutdown()
+
+	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
 
 exit:
 	for {
-
 		select {
-		case <-ctx.Done():
-			log.Println("Exit telnet.")
+		case c:=<-sigs:
+			logger.Infof("Got signal: %v. Exit.", c)
 			break exit
-		default:
-			err := l.SetDeadline(time.Now().Add(time.Second))
-			if err != nil {
-				log.Println(err.Error())
-				continue
-			}
-			conn, err := l.Accept()
-			if os.IsTimeout(err) {
-				continue
-			}
-			if err != nil {
-				log.Fatalf("Cannot accept: %v", err)
-			}
-			log.Println("Connection telnet.")
-			go handleConn(conn)
 		}
 	}
-
 }

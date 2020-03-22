@@ -6,6 +6,7 @@ package proto
 import (
 	context "context"
 	fmt "fmt"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpc"
 	proto "github.com/golang/protobuf/proto"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
@@ -385,7 +386,7 @@ func (*UnimplementedCalendarServer) CountRecord(ctx context.Context, req *empty.
 	return nil, status.Errorf(codes.Unimplemented, "method CountRecord not implemented")
 }
 
-func RegisterCalendarServer(s *grpc.Server, srv CalendarServer) {
+func RegisterCalendarServer(s *grpc.Server, srv *grps.Server) {
 	s.RegisterService(&_Calendar_serviceDesc, srv)
 }
 

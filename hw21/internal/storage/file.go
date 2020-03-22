@@ -80,7 +80,7 @@ func (s *InFile) Add(e event.Event) error {
 	return nil
 }
 
-func (s *InFile) Del(id int) error {
+func (s *InFile) Delete(id int) error {
 	s.Lock()
 	defer s.Unlock()
 	delete(s.Events, id)
