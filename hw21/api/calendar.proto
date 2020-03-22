@@ -10,7 +10,7 @@ service Calendar {
     }
     rpc GetEvent (Id) returns (Event) {
     }
-    rpc DeleleteEvent (Id) returns (google.protobuf.Empty) {
+    rpc DeleteEvent (Id) returns (google.protobuf.Empty) {
     }
     rpc EditEvent (Event) returns (google.protobuf.Empty) {
     }

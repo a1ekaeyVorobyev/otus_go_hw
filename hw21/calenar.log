@@ -5,3 +5,100 @@
 {"level":"info","msg":"Exit service.","time":"2020-03-13T23:35:50+03:00"}
 {"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-13T23:37:34+03:00"}
 {"level":"info","msg":"Exit service.","time":"2020-03-13T23:37:35+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:23:44+03:00"}
+{"level":"info","msg":"127.0.0.1:54606 GET /","time":"2020-03-22T16:24:08+03:00"}
+{"level":"info","msg":"127.0.0.1:54606 GET /favicon.ico","time":"2020-03-22T16:24:09+03:00"}
+{"level":"info","msg":"127.0.0.1:54606 GET /about","time":"2020-03-22T16:24:12+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:24:19+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:24:22+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:26:45+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:26:49+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:26:51+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:30:48+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:31:07+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:31:09+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:31:14+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:34:04+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:35:01+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:35:04+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:35:08+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:36:07+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:36:08+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:36:13+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:38:25+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:38:27+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:38:32+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:38:42+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:38:43+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:39:13+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:43:21+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:43:23+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:48:48+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:49:02+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:49:03+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:50:09+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:50:59+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:51:01+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:51:05+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:51:29+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:51:31+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:51:40+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:52:06+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:52:07+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:52:22+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:54:18+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:54:20+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:54:23+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:55:10+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:55:12+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:55:21+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:57:46+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:57:47+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:57:51+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T16:58:33+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T16:58:34+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T16:58:39+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:01:52+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:01:53+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:02:49+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:03:35+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:03:36+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:03:40+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:04:15+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:04:16+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:04:20+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:05:32+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:05:33+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:05:37+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:06:48+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:06:49+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:06:52+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:07:50+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:07:51+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:07:55+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:08:09+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:08:10+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:08:17+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:08:51+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:08:52+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:08:57+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:09:07+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:09:08+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:09:53+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:11:01+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:11:02+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:11:06+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:11:50+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:11:51+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:12:06+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:12:15+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:12:16+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:12:20+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:12:52+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:12:53+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:12:57+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:13:20+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:13:20+03:00"}
+{"level":"info","msg":"Start web server: 127.0.0.1:8181","time":"2020-03-22T17:13:25+03:00"}
+{"level":"info","msg":"Got signal from OS: interrupt. Exit.","time":"2020-03-22T17:16:21+03:00"}
+{"level":"info","msg":"Got signal: interrupt. Exit.","time":"2020-03-22T17:16:22+03:00"}

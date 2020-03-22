@@ -42,7 +42,7 @@ func (s *InFile) SaveEvents() error {
 	defer f.Close()
 
 	enc := gob.NewEncoder(f)
-	if err := enc.Encode(s); err != nil {
+	if err := enc.Encode(s.Events); err != nil {
 		return fmt.Errorf("cant encode")
 	}
 	return nil
@@ -61,11 +61,12 @@ func (s *InFile) loadEvents() error {
 	defer f.Close()
 
 	enc := gob.NewDecoder(f)
-	if err := enc.Decode(s); err != nil {
+	if err := enc.Decode(&s.Events); err != nil {
 		return fmt.Errorf("cant decode")
 	}
 	return nil
 }
+
 
 func (s *InFile) Init() {
 	s.Events = make(map[int]event.Event)

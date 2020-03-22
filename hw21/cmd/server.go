@@ -3,23 +3,23 @@ package main
 import (
 	"flag"
 	"fmt"
-	"google.golang.org/grpc"
-
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
-	_ "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpcserver"
 
 	"os"
 	"os/signal"
 	"syscall"
+	_"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
+
 )
+
 
 func main() {
 	sigs := make(chan os.Signal, 1)
-	fmt.Println("Start")
 	var cFile string
 	flag.StringVar(&cFile, "config", "config/config.yaml", "Config file")
 	flag.Parse()
@@ -35,23 +35,22 @@ func main() {
 		os.Exit(2)
 	}
 
-
 	logger, f := logger.GetLogger(conf)
 	if f != nil {
 		defer f.Close()
 	}
-
 
 	osSignals := make(chan os.Signal, 1)
 	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
 	inFile := storage.InFile{}
 	inFile.Init()
-	fmt.Println(conf)
 
+	fmt.Println("count Event =", inFile.CountRecord())
 	cal := calendar.Calendar{Config: conf, Storage: &inFile, Logger: &logger}
-	grpcServer := grpc.Server{Config: conf, Logger: &logger, Calendar: &cal}
-
+	fmt.Println("count Event =", cal.Storage.CountRecord())
+	//grpcServer := 	grps.Server{conf,&logger,&cal}
+	grpcServer := grpcserver.Server{conf,&logger,&cal}
 	go web.RunServer(conf, &logger)
 	go grpcServer.Run()
 
@@ -63,7 +62,7 @@ func main() {
 exit:
 	for {
 		select {
-		case c:=<-sigs:
+		case c := <-sigs:
 			logger.Infof("Got signal: %v. Exit.", c)
 			break exit
 		}

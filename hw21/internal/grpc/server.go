@@ -1,4 +1,4 @@
-package grps
+package grpcserver
 
 import (
 	"context"
@@ -10,7 +10,6 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpc"
 	"github.com/sirupsen/logrus"
 	"github.com/golang/protobuf/ptypes/empty"
 )
@@ -73,9 +72,9 @@ func (s *Server) AddEvent(ctx context.Context, e *proto.Event) (*empty.Empty, er
 	return &empty.Empty{}, err
 }
 
-func (s *Server) GetEvent(ctx context.Context, e *proto.Id) (*proto.Event, error) {
-	s.Logger.Debug("Income gRPC GetEvent() id:", grpcId)
-	calendarEvent, err := s.Calendar.GetEvent(int(e.Id))
+func (s *Server) GetEvent(ctx context.Context, id *proto.Id) (*proto.Event, error) {
+	s.Logger.Debug("Income gRPC GetEvent() id:", id)
+	calendarEvent, err := s.Calendar.GetEvent(int(id.Id))
 	start,err := ptypes.TimestampProto(calendarEvent.StartTime)
 	if err!=nil{
 		return nil, err
@@ -101,11 +100,11 @@ func (s *Server) DeleteEvent(ctx context.Context, e *proto.Id) (*empty.Empty, er
 	return &empty.Empty{}, s.Calendar.DeleteEvent(int(e.Id))
 }
 
-func (s *Server) CountEvent(ctx context.Context, e *empty.Empty) (*proto.Count) {
+func (s *Server) CountRecord(ctx context.Context, e *empty.Empty) (*proto.Count,error) {
 	s.Logger.Debug("gRPC  event CountRecord()")
-	c := int32(s.Calendar.CountRecord())
-	cnt := proto.Count{c}
-	return &cnt
+	var cnt = *new(proto.Count)
+	cnt.Count=int32(s.Calendar.CountRecord())
+	return &cnt,nil
 }
 
 
