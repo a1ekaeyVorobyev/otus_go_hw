@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
 )
 
 func TestSaveAndLoadFile(t *testing.T) {

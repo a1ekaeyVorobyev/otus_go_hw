@@ -2,10 +2,10 @@ package grpcserver
 
 import (
 	"context"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
-	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
+	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/pkg/calendar"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/sirupsen/logrus"

@@ -3,3 +3,10 @@ Port:   8181
 LogLevel: debug
 FileName: calenar.log
 GrpcServer: 127.0.0.1:5051
+DBServer: "127.0.0.1:54441"
+DBUser: "postgres"
+DBPass: "postgres"
+DBDatabase: "calendar"
+DBTimeoutConnect: 5
+DBTimeoutExecute: 10
+DBType: "Postgres"

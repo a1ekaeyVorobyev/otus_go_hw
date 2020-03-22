@@ -4,4 +4,5 @@ hw15/*.log
 hw15/internal/storage/*.dat
 hw21/*.log
 hw21/internal/storage/*.dat
-D:\otus_go_hw\hw21\cmd\proto.bat
+hw22/*.log
+hw22/internal/storage/*.dat

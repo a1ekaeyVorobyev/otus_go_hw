@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
 	"github.com/sirupsen/logrus"
 )
 

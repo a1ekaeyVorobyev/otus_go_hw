@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/storage"
 )
 
 func TestNewCalendarHaveNoEvents(t *testing.T) {

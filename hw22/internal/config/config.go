@@ -7,11 +7,18 @@ import (
 )
 
 type Config struct {
-	Host string `yaml:"Host"`
-	Port string `yaml:"Port"`
-	LogLevel string `yaml:"LogLevel"`
-	FileName string `yaml:"FileName"`
-	GrpcServer string `yaml:"GrpcServer"`
+	Host 				string `yaml:"Host"`
+	Port 				string `yaml:"Port"`
+	LogLevel 			string `yaml:"LogLevel"`
+	FileName 			string `yaml:"FileName"`
+	GrpcServer 			string `yaml:"GrpcServer"`
+	DBServer	       	string `yaml:"DBServer"`
+	DBUser           	string `yaml:"DBUser"`
+	DBPass           	string `yaml:"DBPass"`
+	DBDatabase       	string `yaml:"DBDatabase"`
+	DBTimeoutConnect 	int    `yaml:"DBTimeoutConnect"`
+	DBTimeoutExecute 	int    `yaml:"DBTimeoutExecute"`
+	DBType 				string  `yaml:"DBType"`
 }
 
 func ReadFromFile(file string) (Config, error) {
