@@ -3,11 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"google.golang.org/grpc"
+
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grps"
+	_ "github.com/a1ekaeyVorobyev/otus_go_hw/hw21/pkg/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
 
 	"os"

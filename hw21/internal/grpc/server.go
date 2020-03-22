@@ -10,6 +10,7 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpc"
 	"github.com/sirupsen/logrus"
 	"github.com/golang/protobuf/ptypes/empty"
 )
