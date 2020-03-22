@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Calendar {
+    rpc AddEvent (Event) returns (google.protobuf.Empty) {
+    }
+    rpc GetEvent (Id) returns (Event) {
+    }
+    rpc DeleteEvent (Id) returns (google.protobuf.Empty) {
+    }
+    rpc EditEvent (Event) returns (google.protobuf.Empty) {
+    }
+    rpc GetAllEvents (google.protobuf.Empty) returns (Events) {
+    }
+    rpc CountRecord(google.protobuf.Empty) returns (Count){
+    }
+}
+
+message Event {
+    int32 id = 1;
+    google.protobuf.Timestamp startTime = 2;
+    google.protobuf.Timestamp endTime = 3;
+    int32 duration = 4;
+    int32 typeduration = 5;
+    string title = 6;
+    string note = 7;
+	reserved 8;
+    reserved "howmuchwarm";
+    
+}
+
+message Events {
+    repeated Event events = 1;
+}
+
+message Id {
+    int32 id = 1;
+}
+
+message Count{
+	int32 count =1;
+}
