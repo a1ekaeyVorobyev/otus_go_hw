@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/grpcserver"
-
 	"os"
 	"os/signal"
 	"syscall"
@@ -14,6 +12,7 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/storage"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/web"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/grpcserver"
 
 )
 
