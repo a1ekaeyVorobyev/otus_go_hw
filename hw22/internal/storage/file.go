@@ -68,9 +68,10 @@ func (s *InFile) loadEvents() error {
 }
 
 
-func (s *InFile) Init() {
+func (s *InFile) Init()error {
 	s.Events = make(map[int]event.Event)
 	s.loadEvents()
+	return nil
 }
 
 func (s *InFile) Add(e event.Event) error {

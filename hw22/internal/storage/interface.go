@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw21/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
 )
 
 type Interface interface {
@@ -13,4 +13,5 @@ type Interface interface {
 	Edit(event.Event) error
 	IsBusy(event.Event) (bool, error)
 	CountRecord() int
+	Init() error
 }

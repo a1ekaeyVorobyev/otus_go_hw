@@ -39,9 +39,19 @@ func main() {
 	osSignals := make(chan os.Signal, 1)
 	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
-	inFile := storage.InFile{}
-	inFile.Init()
-	cal := calendar.Calendar{Config: conf, Storage: &inFile, Logger: &logger}
+	var st storage.Interface
+	switch conf.DBDatabase {
+	case "Postgres":
+		post := storage.Postgres{}
+		post.Init()
+		st = &post
+	default:
+		inFile := storage.InFile{}
+		inFile.Init()
+		st = &inFile
+	}
+
+	cal := calendar.Calendar{Config: conf, Storage: st, Logger: &logger}
 	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
 	grpcServer := grpcserver.Server{}
 	grpcServer.Calendar = &cal

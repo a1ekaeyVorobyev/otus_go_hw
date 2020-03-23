@@ -6,14 +6,15 @@ import (
 )
 
 type Event struct {
-	Id          	int 		`yaml:"Id"`
-	StartTime   	time.Time 	`yaml:"StartTime"`
-	EndTime     	time.Time 	`yaml:"EndTime"`
-	Duration		int 		`yaml:"Duration"`
-	TypeDuration 	int 		`yaml:"TypeDuration"`
-	Title       	string 		`yaml:"Title"`
-	Note 			string 		`yaml:"Note"`
+	Id          	int 		`yaml:"Id" db:"id"`
+	StartTime   	time.Time 	`yaml:"StartTime" db:"starttime"`
+	EndTime     	time.Time 	`yaml:"EndTime" db:"endtime"`
+	Duration		int 		`yaml:"Duration" db:"duration"`
+	TypeDuration 	int 		`yaml:"TypeDuration" db:"typeduration"`
+	Title       	string 		`yaml:"Title" db:"title"`
+	Note 			string 		`yaml:"Note" db:"note"`
 }
+
 
 type AliasDuration = int
 
