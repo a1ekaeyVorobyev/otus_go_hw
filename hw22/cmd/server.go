@@ -43,14 +43,12 @@ func main() {
 	switch conf.DBDatabase {
 	case "Postgres":
 		post := storage.Postgres{}
-		post.Init()
 		st = &post
 	default:
 		inFile := storage.InFile{}
-		inFile.Init()
 		st = &inFile
 	}
-
+	st.Init()
 	cal := calendar.Calendar{Config: conf, Storage: st, Logger: &logger}
 	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
 	grpcServer := grpcserver.Server{}
