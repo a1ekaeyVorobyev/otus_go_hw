@@ -40,7 +40,7 @@ func main() {
 	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
 	var st storage.Interface
-	switch conf.DBDatabase {
+	switch conf.DBType {
 	case "Postgres":
 		post := storage.Postgres{}
 		st = &post
