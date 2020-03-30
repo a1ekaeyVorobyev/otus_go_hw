@@ -48,7 +48,11 @@ func main() {
 		inFile := storage.InFile{}
 		st = &inFile
 	}
-	st.Init()
+	err = st.Init()
+	if err!=nil{
+		logger.Errorf(err.Error())
+		os.Exit(2)
+	}
 	cal := calendar.Calendar{Config: conf, Storage: st, Logger: &logger}
 	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
 	grpcServer := grpcserver.Server{}
