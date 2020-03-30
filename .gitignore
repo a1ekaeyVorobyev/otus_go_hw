@@ -6,3 +6,5 @@ hw21/*.log
 hw21/internal/storage/*.dat
 hw22/*.log
 hw22/internal/storage/*.dat
+hw25/*.log
+hw25/internal/storage/*.dat

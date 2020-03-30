@@ -1,0 +1,1 @@
+pg_restore.exe --host "localhost" --port "5432" --username "postgres" --no-password --dbname "calendar" --verbose calendar.sql
