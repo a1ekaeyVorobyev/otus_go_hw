@@ -3,19 +3,19 @@ package storage
 import (
 	"fmt"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	"github.com/sirupsen/logrus"
 	"testing"
 	"time"
 )
 
-var conf = config.Config{
-	DBServer:         "127.0.0.1:5432",
-	DBUser:           "postgres",
-	DBPass:           "postgres",
-	DBDatabase:       "calendar",
-	DBTimeoutConnect: 10,
+var conf = Config{
+	Server:         "127.0.0.1:5432",
+	User:           "postgres",
+	Pass:           "postgres",
+	Database:       "calendar",
+	TimeoutConnect: 10,
 }
+
 
 func TestAddGetAllGetDel(t *testing.T) {
 	pg := Postgres{Config: conf, Logger: &logrus.Logger{}}

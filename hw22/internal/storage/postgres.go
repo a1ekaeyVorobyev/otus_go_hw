@@ -86,6 +86,7 @@ func (s *Postgres) GetAll() (events []event.Event, err error) {
 	sql := "SELECT * FROM events;" // :id from `db:"id"`
 	err = s.db.SelectContext(s.ctxExec, &events, sql)
 	if err != nil {
+		fmt.Println("err",err.Error())
 		return events, err
 	}
 	return events, err

@@ -1,7 +1,10 @@
 package config
 
 import (
+	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/scheduler"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"io/ioutil"
 
@@ -9,13 +12,13 @@ import (
 )
 
 type Config struct {
-	Host 				string `yaml:"Host"`
-	Port 				string `yaml:"Port"`
-	LogLevel 			string `yaml:"LogLevel"`
-	FileName 			string `yaml:"FileName"`
-	GrpcServer 			string `yaml:"GrpcServer"`
-	DB 					storage.StorageConfig	`yaml:"db"`
-	Rmq       			rabbitmq.Config	`yaml:"rmq"`
+	Host		string `yaml:"Host"`
+	Port		string `yaml:"Port"`
+	Log			logger.Config `yaml:"log"`
+	Grps		grpcserver.Config `yaml:"grps"`
+	DB 			storage.Config	`yaml:"db"`
+	Rmq 		rabbitmq.Config	`yaml:"rmq"`
+	Sheduler 	scheduler.Config `yaml:"scheduler"`
 }
 
 func ReadFromFile(file string) (Config, error) {

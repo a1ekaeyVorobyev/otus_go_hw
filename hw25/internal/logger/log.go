@@ -4,13 +4,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	"github.com/sirupsen/logrus"
 )
 
-func GetLogger(c config.Config) (logrus.Logger, *os.File) {
+type Config struct{
+	Level		string `yaml:"Level"`
+	FileName	string `yaml:"FileName"`
+}
+
+
+func GetLogger(c Config) (logrus.Logger, *os.File) {
 	logger := logrus.Logger{}
-	switch c.LogLevel {
+	switch c.Level {
 	case "info":
 		logger.SetLevel(logrus.InfoLevel)
 	case "debug":

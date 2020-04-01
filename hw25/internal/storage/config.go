@@ -1,6 +1,7 @@
 package storage
 
-type StorageConfig struct {
+
+type Config struct {
 	Server	       	string `yaml:"Server"`
 	User           	string `yaml:"User"`
 	Pass           	string `yaml:"Pass"`
@@ -9,3 +10,4 @@ type StorageConfig struct {
 	TimeoutExecute 	int    `yaml:"TimeoutExecute"`
 	Type 			string `yaml:"Type"`
 }
+

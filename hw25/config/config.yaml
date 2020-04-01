@@ -1,10 +1,14 @@
 Host:   127.0.0.1
 Port:   8181
-LogLevel: debug
-FileName: calenar.log
-GrpcServer: 127.0.0.1:5051
 
-DB:
+log:
+  Level: debug
+  FileName: calenar.log
+
+grps:
+  Server: 127.0.0.1:5051
+
+db:
   Server: "127.0.0.1:54441"
   User: "postgres"
   Pass: "postgres"
@@ -19,3 +23,8 @@ rmq:
   user: "guest"
   pass: "guest"
   queue: "sendEvent"
+
+scheduler:
+  checkInSeconds: 10
+  notifyInMinute: 10
+

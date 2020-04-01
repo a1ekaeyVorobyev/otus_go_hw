@@ -13,6 +13,7 @@ type Event struct {
 	TypeDuration 	int 		`yaml:"TypeDuration" db:"typeduration"`
 	Title       	string 		`yaml:"Title" db:"title"`
 	Note 			string 		`yaml:"Note" db:"note"`
+	issending 		int			`yaml:"Note" db:"issending"`
 }
 
 

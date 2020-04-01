@@ -12,8 +12,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+
 type Postgres struct {
-	Config  StorageConfig
+	Config  Config
 	Logger  *logrus.Logger
 	db      *sqlx.DB
 	ctxExec context.Context

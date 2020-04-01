@@ -67,6 +67,7 @@ func TestAddGetAllGetDel(t *testing.T) {
 			t.Error("Fail to edit record in storage id:", v.Id)
 		}
 	}
+	/*
 	//delete all record
 	for _, v := range eventsFromPg {
 		err := pg.Delete(v.Id)
@@ -80,4 +81,6 @@ func TestAddGetAllGetDel(t *testing.T) {
 		t.Error("Fail to get count events in storage")
 	}
 
+
+	 */
 }

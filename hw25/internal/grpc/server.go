@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/pkg/calendar"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -12,9 +11,12 @@ import (
 	"google.golang.org/grpc"
 	"net"
 )
+type Config struct{
+	Server 			string `yaml:"Server"`
+}
 
 type Server struct {
-	Config   config.Config
+	Config   Config
 	Logger   *logrus.Logger
 	Calendar *calendar.Calendar
 	server   *grpc.Server
@@ -26,9 +28,9 @@ type CalendarServerGrpc struct {
 }
 
 func (s *Server) Run() {
-	s.Logger.Info("Start GRPC server:", s.Config.GrpcServer)
+	s.Logger.Info("Start GRPC server:", s.Config.Server)
 
-	listener, err := net.Listen("tcp", s.Config.GrpcServer)
+	listener, err := net.Listen("tcp", s.Config.Server)
 	if err != nil {
 		s.Logger.Fatalf("failed to listen: %v", err)
 	}
