@@ -1,14 +1,13 @@
 package calendar
 
 import (
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/storage"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"github.com/sirupsen/logrus"
 )
 
 type Calendar struct {
-	Config  config.Config
+	Config  storage.Config
 	Storage storage.Interface
 	Logger  *logrus.Logger
 }

@@ -2,6 +2,7 @@ package rabbitmq
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"time"
 
@@ -26,7 +27,9 @@ type RMQ struct {
 }
 
 func NewRMQ(conf Config, logger *logrus.Logger) (r *RMQ, err error) {
-	logger.Infoln("Start connect to RMQ")
+	if logger != nil {
+		logger.Infoln("Start connect to RMQ")
+	}
 	r = &RMQ{l: logger, c: &conf}
 	r.conn, err = amqp.DialConfig(fmt.Sprintf("amqp://%s:%s@%s/", conf.User, conf.Pass, conf.HostPort),
 		amqp.Config{Dial: func(network, addr string) (net.Conn, error) {
@@ -45,7 +48,9 @@ func NewRMQ(conf Config, logger *logrus.Logger) (r *RMQ, err error) {
 	if err != nil {
 		return r, err
 	}
-	logger.Infoln("Success connected to RMQ")
+	if logger != nil {
+		logger.Infoln("Success connected to RMQ")
+	}
 
 	return r, nil
 }
@@ -101,4 +106,10 @@ func (r *RMQ) Send(message []byte) error {
 
 func (r *RMQ) GetMsgsCh() (msgsCh <-chan amqp.Delivery, err error) {
 	return r.ch.Consume(r.q.Name, "", false, false, false, false, nil)
+}
+
+func handlerError(err error,msg string){
+	if err!=nil{
+		log.Fatalf("%s : %s",msg,err)
+	}
 }

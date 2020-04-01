@@ -3,8 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
 	"log"
 	"time"
 
@@ -14,15 +13,15 @@ import (
 )
 
 type Postgres struct {
-	Config  config.Config
+	Config  StorageConfig
 	Logger  *logrus.Logger
 	db      *sqlx.DB
 	ctxExec context.Context
 }
 
 func (s *Postgres) Init() (err error) {
-	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.DBTimeoutConnect))
-	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.DBUser, s.Config.DBPass, s.Config.DBServer, s.Config.DBDatabase))
+	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.TimeoutConnect))
+	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.User, s.Config.Pass, s.Config.Server, s.Config.Database))
 	if err != nil {
 		return err
 	}

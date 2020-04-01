@@ -1,7 +1,10 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/a1ekaeyVorobyev/otus_go_hw v0.0.0-20200330061325-dc6dd55cf8d8 h1:Bgjn+AyexuosqD1wt6p5z0ur00vlk3bInRL8YZUcYzI=
 github.com/a1ekaeyVorobyev/otus_go_hw/hw21 v0.0.0-20200322181144-ee903e96063f h1:ki+d/5olZsAP5/MfCEK/khOPN4EQ3sshLTTn//70r60=
 github.com/a1ekaeyVorobyev/otus_go_hw/hw21 v0.0.0-20200322181144-ee903e96063f/go.mod h1:R9AKuZ5AV8KkeEUDT1Xn1rZgkMolWpmsz52uBtZDMHQ=
+github.com/a1ekaeyVorobyev/otus_go_hw/hw22 v0.0.0-20200330061325-dc6dd55cf8d8 h1:2oYELNABs1H3f0+WGVGi4OdCi/9GkfBxQs1BGFszDXo=
+github.com/a1ekaeyVorobyev/otus_go_hw/hw22 v0.0.0-20200330061325-dc6dd55cf8d8/go.mod h1:LpoMRVlwD+7+lsIrTu1Jcv++isfySUgAR7SXD6tFLTs=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
@@ -46,6 +49,8 @@ github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc h1:jUIKcSPO9MoM
 github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/sirupsen/logrus v1.4.2 h1:SPIRibHv4MatM3XXNO2BJeFLZwZ2LvZgfQ5+UNI2im4=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
+github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71 h1:2MR0pKUzlP3SGgj5NYJe/zRYDwOu9ku6YHy+Iw7l5DM=
+github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=

@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
 )
 
 type Interface interface {

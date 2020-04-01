@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
-	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/grpc"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/logger"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/storage"
-	_ "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/pkg/calendar"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/web"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
+	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/logger"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
+	_ "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/pkg/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/web"
 	"os"
 	"os/signal"
 	"syscall"
@@ -30,6 +30,7 @@ func main() {
 		_, _ = fmt.Fprint(os.Stderr, err)
 		os.Exit(2)
 	}
+	fmt.Println(conf)
 
 	logger, f := logger.GetLogger(conf)
 	if f != nil {
@@ -40,16 +41,18 @@ func main() {
 	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
 	var st storage.Interface
-	switch conf.DBDatabase {
+	switch conf.DB.Database {
 	case "Postgres":
 		post := storage.Postgres{}
+		post.Config = conf.DB
 		st = &post
 	default:
 		inFile := storage.InFile{}
 		st = &inFile
 	}
+
 	st.Init()
-	cal := calendar.Calendar{Config: conf, Storage: st, Logger: &logger}
+	cal := calendar.Calendar{Config: conf.DB, Storage: st, Logger: &logger}
 	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
 	grpcServer := grpcserver.Server{}
 	grpcServer.Calendar = &cal

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
@@ -12,13 +14,8 @@ type Config struct {
 	LogLevel 			string `yaml:"LogLevel"`
 	FileName 			string `yaml:"FileName"`
 	GrpcServer 			string `yaml:"GrpcServer"`
-	DBServer	       	string `yaml:"DBServer"`
-	DBUser           	string `yaml:"DBUser"`
-	DBPass           	string `yaml:"DBPass"`
-	DBDatabase       	string `yaml:"DBDatabase"`
-	DBTimeoutConnect 	int    `yaml:"DBTimeoutConnect"`
-	DBTimeoutExecute 	int    `yaml:"DBTimeoutExecute"`
-	DBType 				string  `yaml:"DBType"`
+	DB 					storage.StorageConfig	`yaml:"db"`
+	Rmq       			rabbitmq.Config	`yaml:"rmq"`
 }
 
 func ReadFromFile(file string) (Config, error) {

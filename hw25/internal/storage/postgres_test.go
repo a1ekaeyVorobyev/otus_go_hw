@@ -2,8 +2,8 @@ package storage
 
 import (
 	"fmt"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw22/internal/config"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	"github.com/sirupsen/logrus"
 	"testing"
 	"time"
