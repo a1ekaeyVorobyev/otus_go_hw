@@ -134,3 +134,5 @@ func (s *Postgres) Edit(e event.Event) (err error) {
 	_, err = s.db.NamedExecContext(s.ctxExec, sql, e)
 	return err
 }
+
+

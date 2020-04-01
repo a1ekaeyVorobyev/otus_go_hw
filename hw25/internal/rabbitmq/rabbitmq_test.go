@@ -14,7 +14,7 @@ func TestSendAndReciveMessage(t *testing.T) {
 		Pass:     "guest",
 		HostPort: "192.168.1.124:5672",
 		Timeout:  10,
-		Queue:    "sendEvent",
+		Queue1:   "sendEvent",
 	}
 
 	r, err := NewRMQ(config, nil)
@@ -43,7 +43,7 @@ func TestSendAndReciveMessage(t *testing.T) {
 	}
 	eQueue := make(map[int]event.Event)
 	for i := 0; i < 10; i++ {
-		msgs, ok, err := r.ch.Get(config.Queue, true)
+		msgs, ok, err := r.ch.Get(config.Queue1, true)
 		if ok {
 
 			if err != nil {
@@ -51,17 +51,17 @@ func TestSendAndReciveMessage(t *testing.T) {
 			}
 			e := event.Event{}
 			yaml.Unmarshal(msgs.Body, &e)
-			eQueue[i] =e
+			eQueue[i] = e
 		}
 	}
 	//Check recive message by RabbitMQ
-	for i := 0; i < 10; i++{
+	for i := 0; i < 10; i++ {
 		if eQueue[i].StartTime != eSource[i].StartTime ||
 			eQueue[i].EndTime != eSource[i].EndTime ||
 			eQueue[i].Title != eSource[i].Title ||
 			eQueue[i].Note != eSource[i].Note ||
 			eQueue[i].Duration != eSource[i].Duration ||
-			eQueue[i].TypeDuration != eSource[i].TypeDuration{
+			eQueue[i].TypeDuration != eSource[i].TypeDuration {
 			t.Error("Event in storage")
 		}
 	}

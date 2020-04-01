@@ -22,7 +22,8 @@ rmq:
   timeout_connect: 10
   user: "guest"
   pass: "guest"
-  queue: "sendEvent"
+  queue1: "sendEvent"
+  queue2: "reciveEvent"
 
 scheduler:
   checkInSeconds: 10

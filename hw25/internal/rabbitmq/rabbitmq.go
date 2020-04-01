@@ -15,13 +15,15 @@ type Config struct {
 	Pass     string `yaml:"pass"`
 	HostPort string `yaml:"host_port"`
 	Timeout  int    `yaml:"timeout_connect"`
-	Queue    string `yaml:"queue"`
+	Queue1   string `yaml:"queue1"`
+	Queue2   string `yaml:"queue2"`
 }
 
 type RMQ struct {
 	conn *amqp.Connection
 	ch   *amqp.Channel
 	q    amqp.Queue
+	q2   amqp.Queue
 	l    *logrus.Logger
 	c    *Config
 }
@@ -44,7 +46,11 @@ func NewRMQ(conf Config, logger *logrus.Logger) (r *RMQ, err error) {
 		return r, err
 	}
 
-	r.q, err = r.ch.QueueDeclare(conf.Queue, true, false, false, false, nil)
+	r.q, err = r.ch.QueueDeclare(conf.Queue1, true, false, false, false, nil)
+	if err != nil {
+		return r, err
+	}
+	r.q2, err = r.ch.QueueDeclare(conf.Queue2, true, false, false, false, nil)
 	if err != nil {
 		return r, err
 	}
@@ -70,7 +76,11 @@ func (r *RMQ) Reconnect() (err error) {
 		return err
 	}
 
-	r.q, err = r.ch.QueueDeclare(r.c.Queue, true, false, false, false, nil)
+	r.q, err = r.ch.QueueDeclare(r.c.Queue1, true, false, false, false, nil)
+	if err != nil {
+		return err
+	}
+	r.q2, err = r.ch.QueueDeclare(r.c.Queue2, true, false, false, false, nil)
 	if err != nil {
 		return err
 	}
@@ -104,12 +114,28 @@ func (r *RMQ) Send(message []byte) error {
 	return err
 }
 
+func (r *RMQ) Send2(message []byte) error {
+
+	err := r.ch.Publish("", r.q2.Name, false, false,
+		amqp.Publishing{
+			DeliveryMode: amqp.Persistent,
+			Body:         message,
+		})
+
+	return err
+}
+
 func (r *RMQ) GetMsgsCh() (msgsCh <-chan amqp.Delivery, err error) {
 	return r.ch.Consume(r.q.Name, "", false, false, false, false, nil)
 }
 
-func handlerError(err error,msg string){
-	if err!=nil{
-		log.Fatalf("%s : %s",msg,err)
+func (r *RMQ) GetChanel(nameChanel string) (msg amqp.Delivery, ok bool, err error) {
+	msg, ok, err = r.ch.Get(nameChanel, true)
+	return
+}
+
+func handlerError(err error, msg string) {
+	if err != nil {
+		log.Fatalf("%s : %s", msg, err)
 	}
 }

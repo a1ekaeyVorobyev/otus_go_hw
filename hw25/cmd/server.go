@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
 	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/scheduler"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/web"
 	"os/signal"
@@ -36,20 +37,32 @@ func main() {
 		defer f.Close()
 	}
 
-	osSignals := make(chan os.Signal, 1)
-	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
+	//osSignals := make(chan os.Signal, 1)
+	//signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
 	var st storage.Interface
-	switch conf.DB.Database {
+	var sh scheduler.Interface
+	switch conf.DB.Type {
 	case "Postgres":
 		post := storage.Postgres{}
+		post.Config = conf.DB
 		st = &post
+		sh = &post
 	default:
 		inFile := storage.InFile{}
 		st = &inFile
 	}
-
 	st.Init()
+
+	done := make(chan bool)
+	if (sh!=nil) {
+		fmt.Println("run sh")
+		p := storage.Postgres{}
+		p.Init()
+		s := scheduler.Scheduler{&p, &logger, conf.Sheduler, conf.Rmq, done}
+		go s.Run()
+		defer s.ShutDown()
+	}
 
 	cal := calendar.Calendar{Config: conf.DB, Storage: st, Logger: &logger}
 	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?

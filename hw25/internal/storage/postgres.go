@@ -22,6 +22,7 @@ type Postgres struct {
 
 func (s *Postgres) Init() (err error) {
 	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.TimeoutConnect))
+	//ctxConnect, _ := context.WithCancel(context.Background())
 	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.User, s.Config.Pass, s.Config.Server, s.Config.Database))
 	if err != nil {
 		return err
@@ -41,9 +42,13 @@ func (s *Postgres) Shutdown() {
 }
 
 func (s *Postgres) Add(e event.Event) (err error) {
-	sql := "INSERT INTO events (StartTime, EndTime, Duration, TypeDuration,Title,Note) VALUES (:starttime, :endtime, :duration, :typeduration,:title,:note);"
+	sql := "INSERT INTO events (StartTime, EndTime, Duration, TypeDuration,Title,Note,issending) VALUES (:starttime, :endtime, :duration, :typeduration,:title,:note,:issending);"
 	_, err = s.db.NamedExecContext(s.ctxExec, sql, e)
 	//_, err = s.db.NamedExec(sql,e)
+	if (err!=nil){
+		fmt.Print("add-",err.Error())
+	}
+
 	return err
 }
 
@@ -132,4 +137,49 @@ func (s *Postgres) Edit(e event.Event) (err error) {
 	sql := "UPDATE public.events SET starttime=:starttime, endtime=:endtime, duration=:duration, typeduration=:typeduration, title=:title, note=:note WHERE  id=:id;"
 	_, err = s.db.NamedExecContext(s.ctxExec, sql, e)
 	return err
+}
+
+func (s *Postgres) GetEventSending(endDаte time.Time) (events []event.Event, err error) {
+	sql := fmt.Sprintf("SELECT * FROM events where issending = 0 and starttime < '%s';",endDаte.Format("2006-01-02 15:04:05")) // :id from `db:"id"`
+	err = s.db.SelectContext(s.ctxExec, &events, sql)
+	if err != nil {
+		return events, err
+	}
+	return events, err
+}
+
+func (s *Postgres) MarkEventSentToQueue(id int) (err error) {
+	sql := "update events set issending = 1 WHERE id = :id;"
+	res, err := s.db.NamedExecContext(s.ctxExec, sql, struct {
+		Id int `db:"id"`
+	}{Id: id})
+	if err != nil {
+		return err
+	}
+	cntRow, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if cntRow != 1 {
+		return fmt.Errorf("Fail to delete event id: %d", id)
+	}
+	return nil
+}
+
+func (s *Postgres) MarkEventSentToSubScribe(id int) (err error) {
+	sql := "update events set issending = 2 WHERE id = :id;"
+	res, err := s.db.NamedExecContext(s.ctxExec, sql, struct {
+		Id int `db:"id"`
+	}{Id: id})
+	if err != nil {
+		return err
+	}
+	cntRow, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if cntRow != 1 {
+		return fmt.Errorf("Fail to delete event id: %d", id)
+	}
+	return nil
 }
