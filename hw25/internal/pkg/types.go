@@ -1,10 +1,11 @@
-package storage
+package pkg
 
 import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
+	"time"
 )
 
-type Interface interface {
+type Storage interface {
 	Add(e event.Event) error
 	Delete(id int) error
 	Clear() error
@@ -14,4 +15,11 @@ type Interface interface {
 	IsBusy(event.Event) (bool, error)
 	CountRecord() int
 	Init() error
+}
+
+type Scheduler interface {
+	Init() error
+	GetEventSending(time.Time) ([]event.Event, error)
+	MarkEventSentToQueue(int) error
+	MarkEventSentToSubScribe(int) error
 }

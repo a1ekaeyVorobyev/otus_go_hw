@@ -3,6 +3,7 @@ package scheduler
 import (
 	"fmt"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/pkg"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -15,19 +16,13 @@ type Config struct {
 }
 
 type Scheduler struct {
-	Store     Interface
+	Store     pkg.Scheduler
 	Logger    *logrus.Logger
 	Config    Config
 	ConfigRMQ rabbitmq.Config
 	Done      chan bool
 }
 
-type Interface interface {
-	Init() error
-	GetEventSending(time.Time) ([]event.Event, error)
-	MarkEventSentToQueue(int) error
-	MarkEventSentToSubScribe(int) error
-}
 
 func (s *Scheduler) Run() {
 	fmt.Println("run Scheduler")

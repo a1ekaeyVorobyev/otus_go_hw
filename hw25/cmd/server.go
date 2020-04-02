@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
 	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/pkg"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/scheduler"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/web"
@@ -30,7 +31,6 @@ func main() {
 		_, _ = fmt.Fprint(os.Stderr, err)
 		os.Exit(2)
 	}
-	fmt.Println(conf)
 
 	logger, f := logger.GetLogger(conf.Log)
 	if f != nil {
@@ -40,8 +40,8 @@ func main() {
 	//osSignals := make(chan os.Signal, 1)
 	//signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 
-	var st storage.Interface
-	var sh scheduler.Interface
+	var st pkg.Storage
+	var sh pkg.Scheduler
 	switch conf.DB.Type {
 	case "Postgres":
 		post := storage.Postgres{}

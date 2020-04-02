@@ -35,7 +35,6 @@ func main() {
 		_, _ = fmt.Fprint(os.Stderr, err)
 		os.Exit(2)
 	}
-	fmt.Println(conf)
 
 	logger, f := logger.GetLogger(conf.Log)
 	if f != nil {
