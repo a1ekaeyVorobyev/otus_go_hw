@@ -14,11 +14,11 @@ type Storage interface {
 	Edit(event.Event) error
 	IsBusy(event.Event) (bool, error)
 	CountRecord() int
-	Init() error
+	New() error
 }
 
 type Scheduler interface {
-	Init() error
+	New() error
 	GetEventSending(time.Time) ([]event.Event, error)
 	MarkEventSentToQueue(int) error
 	MarkEventSentToSubScribe(int) error

@@ -52,14 +52,12 @@ func main() {
 		inFile := storage.InFile{}
 		st = &inFile
 	}
-	st.Init()
+	st.new()
 
 	done := make(chan bool)
 	if (sh!=nil) {
 		fmt.Println("run sh")
-		p := storage.Postgres{}
-		p.Init()
-		s := scheduler.Scheduler{&p, &logger, conf.Sheduler, conf.Rmq, done}
+		s := scheduler.Scheduler{sh, &logger, conf.Sheduler, conf.Rmq, done}
 		go s.Run()
 		defer s.ShutDown()
 	}

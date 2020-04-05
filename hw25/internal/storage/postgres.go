@@ -20,7 +20,7 @@ type Postgres struct {
 	ctxExec context.Context
 }
 
-func (s *Postgres) Init() (err error) {
+func (s *Postgres) New() (err error) {
 	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.TimeoutConnect))
 	//ctxConnect, _ := context.WithCancel(context.Background())
 	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.User, s.Config.Pass, s.Config.Server, s.Config.Database))

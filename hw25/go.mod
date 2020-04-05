@@ -3,7 +3,6 @@ module github.com/a1ekaeyVorobyev/otus_go_hw/hw25
 go 1.13
 
 require (
-	github.com/a1ekaeyVorobyev/otus_go_hw/hw21 v0.0.0-20200322181144-ee903e96063f
 	github.com/a1ekaeyVorobyev/otus_go_hw/hw22 v0.0.0-20200330061325-dc6dd55cf8d8
 	github.com/golang/protobuf v1.3.5
 	github.com/jackc/pgx v3.6.2+incompatible

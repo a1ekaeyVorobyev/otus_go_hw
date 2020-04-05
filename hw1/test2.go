@@ -1,4 +1,4 @@
-package main
+package hw1
 
 import(
 	"fmt"

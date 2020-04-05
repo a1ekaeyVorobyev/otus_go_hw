@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	_ "gopkg.in/yaml.v2"
+	"sync"
 	"testing"
 	"time"
 )
@@ -21,9 +22,9 @@ var conf = storage.Config{
 }
 
 func TestAddGetAllGetDel(t *testing.T) {
-	//var wg sync.WaitGroup
+	var wg sync.WaitGroup
 	pg := storage.Postgres{Config: conf, Logger: &logrus.Logger{}}
-	pg.Init()
+	pg.New()
 	s := Scheduler{
 		Store:     &pg,
 		Logger:    &logrus.Logger{},
@@ -65,7 +66,9 @@ func TestAddGetAllGetDel(t *testing.T) {
 	if err != nil {
 		t.Error("Fail get event RabbitMQ", err.Error())
 	}
-	s.sendEventsToQueue()
+	wg.Add(1)
+	go s.sendEventsToQueue()
+	wg.Wait()
 	//work emulation sender
 	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
 	if err != nil {

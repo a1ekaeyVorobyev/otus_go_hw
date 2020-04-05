@@ -1,6 +1,6 @@
 module github.com/a1ekaeyVorobyev/otus_go_hw/hw1
 
-go 1.13
+go 1.14
 
 require (
 	github.com/beevik/ntp v0.2.0
