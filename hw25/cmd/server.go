@@ -4,16 +4,17 @@ import (
 	"flag"
 	"fmt"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	grpcserver "github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/logger"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/pkg"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/scheduler"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/web"
+	"github.com/sirupsen/logrus"
+	"os"
 	"os/signal"
 	"syscall"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/logger"
-	"os"
 )
 
 func main() {
@@ -52,8 +53,11 @@ func main() {
 		inFile := storage.InFile{}
 		st = &inFile
 	}
-	st.new()
-
+	err = st.New()
+	if err!= nil{
+		logrus.Error("Error with create storage:",err.Error())
+		os.Exit(2)
+	}
 	done := make(chan bool)
 	if (sh!=nil) {
 		fmt.Println("run sh")

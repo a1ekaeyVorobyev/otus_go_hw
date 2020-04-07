@@ -7,6 +7,7 @@ import (
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
+	"sync"
 	"time"
 )
 
@@ -25,6 +26,7 @@ type Scheduler struct {
 
 
 func (s *Scheduler) Run() {
+	var wg sync.WaitGroup
 	fmt.Println("run Scheduler")
 	ticker := time.NewTicker(time.Duration(s.Config.CheckInSeconds) * time.Second)
 out:
@@ -34,13 +36,21 @@ out:
 			break out
 		case <-ticker.C:
 			fmt.Println("run ticker")
-			go s.sendEventsToQueue()
-			go s.markEvent()
+			wg.Add(2)
+			go func() {
+				defer wg.Done()
+				s.sendEventsToQueue()
+			}()
+			go func() {
+				defer wg.Done()
+				s.markEvent()
+			}()
 		}
 	}
 }
 
 func (s *Scheduler) sendEventsToQueue() {
+	//defer s.Wg.Done()
 	dateFinish := time.Now().Add(time.Duration(s.Config.NotifyInMinute) * time.Minute)
 	events, err := s.Store.GetEventSending(dateFinish)
 	if err != nil {
@@ -74,6 +84,7 @@ func (s *Scheduler) sendEventsToQueue() {
 }
 
 func (s *Scheduler) markEvent() {
+	//defer s.Wg.Done()
 	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
 	if err != nil {
 		s.Logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())

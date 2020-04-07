@@ -41,7 +41,7 @@ func TestAddGetAllGetDel(t *testing.T) {
 	s.ConfigRMQ = rabbitmq.Config{
 		User:     "guest",
 		Pass:     "guest",
-		HostPort: "192.168.1.124:5672",
+		HostPort: "192.168.1.31:5672",
 		Timeout:  10,
 		Queue1:   "sendEventTest",
 		Queue2:   "reciveEventTest",
@@ -67,7 +67,11 @@ func TestAddGetAllGetDel(t *testing.T) {
 		t.Error("Fail get event RabbitMQ", err.Error())
 	}
 	wg.Add(1)
-	go s.sendEventsToQueue()
+	go func() {
+		defer wg.Done()
+		s.sendEventsToQueue()
+	}()
+
 	wg.Wait()
 	//work emulation sender
 	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
