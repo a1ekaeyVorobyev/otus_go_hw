@@ -30,9 +30,9 @@ func NewPG(config  Config,	logger  *logrus.Logger)(s *Postgres,err error){
 }
 
 func (s *Postgres) new() (err error) {
-	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.TimeoutConnect))
+	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.config.TimeoutConnect))
 	//ctxConnect, _ := context.WithCancel(context.Background())
-	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.User, s.Config.Pass, s.Config.Server, s.Config.Database))
+	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.config.User, s.config.Pass, s.config.Server, s.config.Database))
 	if err != nil {
 		return err
 	}
