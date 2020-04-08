@@ -136,5 +136,6 @@ func (s *scheduler) ShutDown() {
 			return
 		}
 		s.Unlock()
+		time.Sleep(time.Duration(5)*time.Second)
 	}
 }
