@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -10,7 +11,8 @@ import (
 
 func TestSaveAndLoadFile(t *testing.T) {
 	//InFile := InFile{}
-	InFile,err := NewStorage()
+	InFile,_ := NewStorage()
+	fmt.Print("create storage")
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -64,7 +66,7 @@ func TestAddEventSuccess(t *testing.T) {
 }
 
 func TestDeleteEventSuccess(t *testing.T) {
-	InFile,err := NewStorage()
+	InFile,_ := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -92,7 +94,7 @@ func TestDeleteEventSuccess(t *testing.T) {
 }
 
 func TestIslBusy(t *testing.T) {
-	InFile,err := NewStorage()
+	InFile,_ := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
