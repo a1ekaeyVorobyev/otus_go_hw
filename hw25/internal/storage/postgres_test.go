@@ -18,8 +18,7 @@ var conf = Config{
 
 
 func TestAddGetAllGetDel(t *testing.T) {
-	pg := Postgres{Config: conf, Logger: &logrus.Logger{}}
-	err := pg.Init()
+	pg,err := NewPG(conf,&logrus.Logger{})
 	if err != nil {
 		t.Error("Fail to init PG")
 	}

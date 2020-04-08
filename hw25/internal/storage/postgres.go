@@ -14,13 +14,22 @@ import (
 
 
 type Postgres struct {
-	Config  Config
-	Logger  *logrus.Logger
+	config  Config
+	logger  *logrus.Logger
 	db      *sqlx.DB
 	ctxExec context.Context
 }
 
-func (s *Postgres) New() (err error) {
+func NewPG(config  Config,	logger  *logrus.Logger)(s *Postgres,err error){
+	s = &Postgres{
+		config:  config,
+		logger:  logger,
+	}
+	err = s.new()
+	return
+}
+
+func (s *Postgres) new() (err error) {
 	ctxConnect, _ := context.WithTimeout(context.Background(), time.Second*time.Duration(s.Config.TimeoutConnect))
 	//ctxConnect, _ := context.WithCancel(context.Background())
 	s.db, err = sqlx.ConnectContext(ctxConnect, "pgx", fmt.Sprintf("postgres://%s:%s@%s/%s", s.Config.User, s.Config.Pass, s.Config.Server, s.Config.Database))
@@ -28,17 +37,15 @@ func (s *Postgres) New() (err error) {
 		return err
 	}
 	s.ctxExec, _ = context.WithCancel(context.Background())
-	//s.ctxExec, _ = context.WithTimeout(context.Background(),time.Minute*time.Duration(s.Config.DBTimeoutExecute))
+	//s.ctxExec, _ = context.WithTimeout(context.Background(),time.Minute*time.Duration(s.Config.TimeoutExecute))
 	return err
 }
 
 func (s *Postgres) Shutdown() {
-	s.Logger.Infoln("Close Postgres connection...")
+	s.logger.Infoln("Close Postgres connection...")
 	err := s.db.Close()
-	if err != nil {
-		s.Logger.Infoln("Success close Postgres connection.")
-	}
-	s.Logger.Infoln("Fail to close Postgres connection.")
+	if err != nil { }
+	s.logger.Infoln("Fail to close Postgres connection.")
 }
 
 func (s *Postgres) Add(e event.Event) (err error) {

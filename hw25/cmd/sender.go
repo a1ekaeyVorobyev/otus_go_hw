@@ -56,9 +56,18 @@ exit:
 	for {
 		select {
 		case message, ok := <-msgCh:
-			if ok {
-				go s.processMessage(message.Body)
+			if !ok {
+				err := s.rmq.Reconnect()
+				if err != nil {
+					s.logger.Errorln("Fail on reconnect to RMQ", err)
+				}
+				continue
 			}
+			if err != nil {
+				s.logger.Errorln("Fail recive messge by RMQ", err)
+				continue
+			}
+			go s.processMessage(message.Body)
 		case c := <-sigs:
 			logger.Infof("Got signal: %v. Exit.", c)
 			break exit

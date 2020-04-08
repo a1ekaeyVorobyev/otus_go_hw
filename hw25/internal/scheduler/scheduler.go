@@ -14,102 +14,127 @@ import (
 type Config struct {
 	CheckInSeconds int `yaml:"checkInSeconds"`
 	NotifyInMinute int `yaml:"notifyInMinute"`
+	ForceCloseInMinute	int `yaml:"forceCloseInMinute"`
 }
 
-type Scheduler struct {
-	Store     pkg.Scheduler
-	Logger    *logrus.Logger
-	Config    Config
-	ConfigRMQ rabbitmq.Config
-	Done      chan bool
+type scheduler struct {
+	store     pkg.Scheduler
+	logger    *logrus.Logger
+	config    Config
+	configRMQ rabbitmq.Config
+	done      chan bool
+	sync.Mutex
+	x  int
 }
 
+func NewScheduler(store pkg.Scheduler, logger *logrus.Logger,config Config,configRMQ rabbitmq.Config)(s *scheduler,err error){
+	s = &scheduler{}
+	s.config = config
+	s.configRMQ = configRMQ
+	s.logger = logger
+	return s,nil
+}
 
-func (s *Scheduler) Run() {
-	var wg sync.WaitGroup
+func (s *scheduler) Run() {
 	fmt.Println("run Scheduler")
-	ticker := time.NewTicker(time.Duration(s.Config.CheckInSeconds) * time.Second)
+	ticker := time.NewTicker(time.Duration(s.config.CheckInSeconds) * time.Second)
 out:
 	for {
 		select {
-		case <-s.Done:
+		case <-s.done:
 			break out
 		case <-ticker.C:
-			fmt.Println("run ticker")
-			wg.Add(2)
-			go func() {
-				defer wg.Done()
-				s.sendEventsToQueue()
-			}()
-			go func() {
-				defer wg.Done()
-				s.markEvent()
-			}()
+			s.Lock()
+			if s.x ==0 {
+				s.x= 2
+				go s.sendEventsToQueue()
+				go s.markEvent()
+			}
+			s.Unlock()
 		}
 	}
+	ticker.Stop()
 }
 
-func (s *Scheduler) sendEventsToQueue() {
+func (s *scheduler) sendEventsToQueue() {
 	//defer s.Wg.Done()
-	dateFinish := time.Now().Add(time.Duration(s.Config.NotifyInMinute) * time.Minute)
-	events, err := s.Store.GetEventSending(dateFinish)
+	dateFinish := time.Now().Add(time.Duration(s.config.NotifyInMinute) * time.Minute)
+	events, err := s.store.GetEventSending(dateFinish)
 	if err != nil {
-		s.Logger.Error("Fail to get events by scheduler:", err.Error())
+		s.logger.Error("Fail to get events by scheduler:", err.Error())
 	}
 	if events == nil {
 		return
 	}
-	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
+	r, err := rabbitmq.NewRMQ(s.configRMQ, s.logger)
 	if err != nil {
-		s.Logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())
+		s.logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())
 		return
 	}
-	s.Logger.Infoln("Start scheduler")
+	s.logger.Infoln("Start scheduler")
 	for _, e := range events {
 		d, err := yaml.Marshal(&e)
 		if err != nil {
-			s.Logger.Error("Fail to marshal event by scheduler", err.Error())
+			s.logger.Error("Fail to marshal event by scheduler", err.Error())
 		}
 		err = r.Send(d)
 		if err != nil {
-			s.Logger.Error("Fail to send message by RabbitMQ from scheduler", err.Error())
+			s.logger.Error("Fail to send message by RabbitMQ from scheduler", err.Error())
 			continue
 		}
-		err = s.Store.MarkEventSentToQueue(e.Id)
+		err = s.store.MarkEventSentToQueue(e.Id)
 		if err != nil {
-			s.Logger.Error("Fail to mark event sending  by RabbitMQ from scheduler", err.Error())
+			s.logger.Error("Fail to mark event sending  by RabbitMQ from scheduler", err.Error())
 			continue
 		}
 	}
+	s.Lock()
+	s.x--
+	s.Unlock()
 }
 
-func (s *Scheduler) markEvent() {
+func (s *scheduler) markEvent() {
 	//defer s.Wg.Done()
-	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
+	r, err := rabbitmq.NewRMQ(s.configRMQ, s.logger)
 	if err != nil {
-		s.Logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())
+		s.logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())
 		return
 	}
 out:
 	for {
-		msgs, ok, err := r.GetChanel(s.ConfigRMQ.Queue2)
+		msgs, ok, err := r.GetChanel(s.configRMQ.Queue2)
 		if !ok {
 			break out
 		}
 		if err != nil {
-			s.Logger.Error("Fail to send message by RabbitMQ", err.Error())
+			s.logger.Error("Fail to send message by RabbitMQ", err.Error())
 		}
 		e := event.Event{}
 		yaml.Unmarshal(msgs.Body, &e)
-		err = s.Store.MarkEventSentToSubScribe(e.Id)
+		err = s.store.MarkEventSentToSubScribe(e.Id)
 		if err != nil {
-			s.Logger.Error("Fail to mark event sending  by RabbitMQ from storage", err.Error())
+			s.logger.Error("Fail to mark event sending  by RabbitMQ from storage", err.Error())
 			continue
 
 		}
 	}
+	s.Lock()
+	s.x--
+	s.Unlock()
 }
 
-func (s *Scheduler) ShutDown() {
-	s.Done <- true
+func (s *scheduler) ShutDown() {
+	t := time.NewTimer(time.Minute * time.Duration(s.config.ForceCloseInMinute))
+	select{
+		case <-t.C:
+			s.logger.Info("Forced close scheduler")
+			return
+	default:
+		s.Lock()
+		if s.x ==0 {
+			s.done <- true
+			return
+		}
+		s.Unlock()
+	}
 }

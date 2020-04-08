@@ -9,8 +9,8 @@ import (
 )
 
 func TestSaveAndLoadFile(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	//InFile := InFile{}
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -40,8 +40,7 @@ func TestSaveAndLoadFile(t *testing.T) {
 }
 
 func TestEmptyStorageHaveNoEvents(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	events, err := InFile.GetAll()
 	if err != nil || len(events) != 0 {
@@ -50,11 +49,10 @@ func TestEmptyStorageHaveNoEvents(t *testing.T) {
 }
 
 func TestAddEventSuccess(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	event, _ := event.CreateEvent("2020-01-02T11:00:00Z", "2020-01-02T12:00:00Z", "Event 1", "Start event", 0, 0)
-	err := InFile.Add(event)
+	err = InFile.Add(event)
 	if err != nil {
 		t.Error("Can't add event ")
 	}
@@ -66,8 +64,7 @@ func TestAddEventSuccess(t *testing.T) {
 }
 
 func TestDeleteEventSuccess(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -95,8 +92,7 @@ func TestDeleteEventSuccess(t *testing.T) {
 }
 
 func TestIslBusy(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -124,15 +120,14 @@ func TestIslBusy(t *testing.T) {
 }
 
 func TestGetEvent(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
 	title := "Event 1"
 	note := "This envets1 start:" + dateStart.Format(time.RFC3339) + " finish:" + dateEnd.Format(time.RFC3339)
 	event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), dateEnd.Format(time.RFC3339), title, note, 0, 0)
-	err := InFile.Add(event)
+	err = InFile.Add(event)
 	if err != nil {
 		t.Error("Can't add event")
 	}
@@ -153,8 +148,7 @@ func TestGetEvent(t *testing.T) {
 }
 
 func TestEditEvent(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -178,13 +172,13 @@ func TestEditEvent(t *testing.T) {
 	editEvent.Title = "testTitle"
 	editEvent.Note = "testNote"
 
-	err := InFile.Edit(editEvent)
+	err = InFile.Edit(editEvent)
 	if err != nil {
 		t.Error("Got not expected error on edit")
 	}
 	InFile.SaveEvents()
 	InFile.Clear()
-	InFile.Init()
+	InFile,err = NewStorage()
 	eventAfterEdit, _ := InFile.Get(r)
 	if eventAfterEdit != editEvent {
 		t.Error("Edit Event not id Event after edit")
@@ -192,13 +186,12 @@ func TestEditEvent(t *testing.T) {
 }
 
 func TestAddDurrationEventSuccess(t *testing.T) {
-	InFile := InFile{}
-	InFile.Init()
+	InFile,err := NewStorage()
 	InFile.Clear()
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 2, 11, 0, 0, 0, time.UTC)
 	event, _ := event.CreateEvent(dateStart.Format(time.RFC3339), "", "Event 1", "Start event", 1, event.EnumTypeDuration.Day)
-	err := InFile.Add(event)
+	err = InFile.Add(event)
 	if err != nil {
 		t.Error("Can't add event")
 	}

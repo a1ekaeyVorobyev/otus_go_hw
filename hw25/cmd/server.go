@@ -45,33 +45,38 @@ func main() {
 	var sh pkg.Scheduler
 	switch conf.DB.Type {
 	case "Postgres":
-		post := storage.Postgres{}
-		post.Config = conf.DB
-		st = &post
-		sh = &post
+		var post *storage.Postgres
+		post,err = storage.NewPG(conf.DB,&logger)
+		st = post
+		sh = post
 	default:
-		inFile := storage.InFile{}
-		st = &inFile
+		var inFile *storage.InFile
+		inFile,err = storage.NewStorage()
+		st = inFile
 	}
-	err = st.New()
-	if err!= nil{
-		logrus.Error("Error with create storage:",err.Error())
+	if err != nil {
+		logrus.Error("Error with create storage:", err.Error())
 		os.Exit(2)
 	}
-	done := make(chan bool)
-	if (sh!=nil) {
+	if sh != nil {
 		fmt.Println("run sh")
-		s := scheduler.Scheduler{sh, &logger, conf.Sheduler, conf.Rmq, done}
+		s,err := scheduler.NewScheduler(sh, &logger, conf.Sheduler, conf.Rmq)
+		if err != nil {
+			logrus.Error("Error with create scheduler:", err.Error())
+			os.Exit(2)
+		}
 		go s.Run()
 		defer s.ShutDown()
 	}
 
 	cal := calendar.Calendar{Config: conf.DB, Storage: st, Logger: &logger}
-	//grpcServer := 	grps.Server{conf,&logger,&cal} get error too few values ?
-	grpcServer := grpcserver.Server{}
-	grpcServer.Calendar = &cal
-	grpcServer.Config = conf.Grps
-	grpcServer.Logger = &logger
+
+	grpcServer,err := grpcserver.NewGRPSDerver(conf.Grps,&logger,&cal)
+	if(err!=nil){
+		logger.Error("Cann't create grps server:",err.Error())
+		os.Exit(2)
+	}
+
 	go web.RunServer(conf, &logger)
 	go grpcServer.Run()
 

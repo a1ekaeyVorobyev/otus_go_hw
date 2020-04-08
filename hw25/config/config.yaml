@@ -28,4 +28,5 @@ rmq:
 scheduler:
   checkInSeconds: 10
   notifyInMinute: 10
+  forceCloseInMinute: 5
 

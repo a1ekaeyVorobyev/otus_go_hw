@@ -23,28 +23,28 @@ var conf = storage.Config{
 
 func TestAddGetAllGetDel(t *testing.T) {
 	var wg sync.WaitGroup
-	pg := storage.Postgres{Config: conf, Logger: &logrus.Logger{}}
-	pg.New()
-	s := Scheduler{
-		Store:     &pg,
-		Logger:    &logrus.Logger{},
-		Config:    Config{},
-		ConfigRMQ: rabbitmq.Config{},
-		Done:      nil,
+	//pg := storage.Postgres{Config: conf, Logger: &logrus.Logger{}}
+	pg,err := storage.NewPG(conf,&logrus.Logger{})
+	if err!=nil{
+		t.Error("Fail create storage", err.Error())
 	}
-
-	s.Config = Config{
+	conf := Config{
 		CheckInSeconds: 10,
 		NotifyInMinute: 10,
+		ForceCloseInMinute : 5,
 	}
 
-	s.ConfigRMQ = rabbitmq.Config{
+	configRMQ := rabbitmq.Config{
 		User:     "guest",
 		Pass:     "guest",
 		HostPort: "192.168.1.31:5672",
 		Timeout:  10,
 		Queue1:   "sendEventTest",
 		Queue2:   "reciveEventTest",
+	}
+	s,err := NewScheduler(pg, &logrus.Logger{},conf,configRMQ)
+	if err!=nil{
+		t.Error("Fail create new scheduler", err.Error())
 	}
 
 	//add 10 events
@@ -61,8 +61,8 @@ func TestAddGetAllGetDel(t *testing.T) {
 			t.Error("Fail to add event to storage", err.Error())
 		}
 	}
-	dateFinish := time.Now().Add(time.Duration(s.Config.NotifyInMinute) * time.Minute)
-	events, err := s.Store.GetEventSending(dateFinish)
+	dateFinish := time.Now().Add(time.Duration(s.config.NotifyInMinute) * time.Minute)
+	events, err := s.store.GetEventSending(dateFinish)
 	if err != nil {
 		t.Error("Fail get event RabbitMQ", err.Error())
 	}
@@ -74,14 +74,14 @@ func TestAddGetAllGetDel(t *testing.T) {
 
 	wg.Wait()
 	//work emulation sender
-	r, err := rabbitmq.NewRMQ(s.ConfigRMQ, s.Logger)
+	r, err := rabbitmq.NewRMQ(s.configRMQ, s.logger)
 	if err != nil {
 		t.Error("Fail to create new RabbitMQ by scheduler", err.Error())
 	}
 	i := 0
 out:
 	for {
-		msgs, ok, err := r.GetChanel(s.ConfigRMQ.Queue1)
+		msgs, ok, err := r.GetChanel(s.configRMQ.Queue1)
 		if !ok {
 			break out
 		}
@@ -99,7 +99,7 @@ out:
 	if err != nil {
 		t.Error("Fail to create new RabbitMQ by scheduler", err.Error())
 	}
-	s.Logger.Infoln("Start scheduler")
+	s.logger.Infoln("Start scheduler")
 	for _, e := range events {
 		d, err := yaml.Marshal(&e)
 		if err != nil {
