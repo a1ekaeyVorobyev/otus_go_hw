@@ -94,7 +94,6 @@ func (s *scheduler) sendEventsToQueue() {
 }
 
 func (s *scheduler) markEvent() {
-	//defer s.Wg.Done()
 	r, err := rabbitmq.NewRMQ(s.configRMQ, s.logger)
 	if err != nil {
 		s.logger.Error("Fail to create new RabbitMQ by scheduler", err.Error())

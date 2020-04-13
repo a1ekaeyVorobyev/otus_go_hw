@@ -137,9 +137,9 @@ func (s *server) EditEvent(ctx context.Context, e *proto.Event) (*empty.Empty, e
 }
 
 func (s *server) GetAllEvents(ctx context.Context, e *empty.Empty) (*proto.Events, error) {
-	s.Logger.Debug("gRPC event GetAllEvents()")
-	calendarEvents, err := s.Calendar.GetAllEvents()
-	protobufEvents := make([]*proto.Event, 0, s.Calendar.CountRecord())
+	s.logger.Debug("gRPC event GetAllEvents()")
+	calendarEvents, err := s.calendar.GetAllEvents()
+	protobufEvents := make([]*proto.Event, 0, s.calendar.CountRecord())
 
 	for _, calendarEvent := range calendarEvents {
 		start, err := ptypes.TimestampProto(calendarEvent.StartTime)

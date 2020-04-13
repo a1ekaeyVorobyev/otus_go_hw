@@ -9,7 +9,7 @@ grps:
   Server: 127.0.0.1:5051
 
 db:
-  Server: "127.0.0.1:54441"
+  Server: "127.0.0.1:5432"
   User: "postgres"
   Pass: "postgres"
   Database: "calendar"
