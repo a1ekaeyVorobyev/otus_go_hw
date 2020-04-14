@@ -22,6 +22,7 @@ var conf = storage.Config{
 }
 
 func TestAddGetAllGetDel(t *testing.T) {
+	fmt.Println("create config")
 	var wg sync.WaitGroup
 	//pg := storage.Postgres{Config: conf, Logger: &logrus.Logger{}}
 	pg,err := storage.NewPG(conf,&logrus.Logger{})
@@ -42,11 +43,12 @@ func TestAddGetAllGetDel(t *testing.T) {
 		Queue1:   "sendEventTest",
 		Queue2:   "reciveEventTest",
 	}
+
 	s,err := NewScheduler(pg, &logrus.Logger{},conf,configRMQ)
 	if err!=nil{
 		t.Error("Fail create new scheduler", err.Error())
 	}
-
+	fmt.Println("add 10 events")
 	//add 10 events
 	dateStart := time.Now()
 	dateEnd := time.Now().Add(time.Duration(5) * time.Minute)
@@ -62,16 +64,18 @@ func TestAddGetAllGetDel(t *testing.T) {
 		}
 	}
 	dateFinish := time.Now().Add(time.Duration(s.config.NotifyInMinute) * time.Minute)
+	fmt.Println("GetEventSending",dateFinish)
 	events, err := s.store.GetEventSending(dateFinish)
+	//events, err := pg.GetEventSending(dateFinish)
 	if err != nil {
 		t.Error("Fail get event RabbitMQ", err.Error())
 	}
+	fmt.Println("endEventsToQueue")
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		s.sendEventsToQueue()
 	}()
-
 	wg.Wait()
 	//work emulation sender
 	r, err := rabbitmq.NewRMQ(s.configRMQ, s.logger)

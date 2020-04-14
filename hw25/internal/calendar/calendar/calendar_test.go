@@ -1,31 +1,31 @@
 package calendar
 
 import (
+	"fmt"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
+	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
+	"github.com/sirupsen/logrus"
 	"math/rand"
 	"testing"
 	"time"
-
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
 )
 
 func TestNewCalendarHaveNoEvents(t *testing.T) {
-	InFile := storage.InFile{}
-	InFile.Init()
+	InFile,_ := storage.NewStorage()
 	InFile.Clear()
-	calendar := Calendar{Storage: &InFile}
-
+	calendar :=Calendar{Storage: InFile, Logger: &logrus.Logger{}}
 	events, err := calendar.GetAllEvents()
+
 	if err != ErrNoEventsInStorage || len(events) != 0 {
+		fmt.Println(err.Error(),"--",len(events))
 		t.Error("In new storage exist events")
 	}
 }
 
 func TestAddEventSuccess(t *testing.T) {
-	InFile := storage.InFile{}
-	InFile.Init()
+	InFile,_ := storage.NewStorage()
 	InFile.Clear()
-	calendar := Calendar{Storage: &InFile}
+	calendar :=Calendar{Storage: InFile, Logger: &logrus.Logger{}}
 
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -47,10 +47,9 @@ func TestAddEventSuccess(t *testing.T) {
 }
 
 func TestDeleteEventSuccess(t *testing.T) {
-	InFile := storage.InFile{}
-	InFile.Init()
+	InFile,_ := storage.NewStorage()
 	InFile.Clear()
-	calendar := Calendar{Storage: &InFile}
+	calendar :=Calendar{Storage: InFile, Logger: &logrus.Logger{}}
 
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -80,10 +79,9 @@ func TestDeleteEventSuccess(t *testing.T) {
 
 func TestAddDateIntervalBusy(t *testing.T) {
 	var err error
-	inMemory := storage.InFile{}
-	inMemory.Init()
+	inMemory,_ := storage.NewStorage()
 	inMemory.Clear()
-	calendar := Calendar{Storage: &inMemory}
+	calendar :=Calendar{Storage: inMemory, Logger: &logrus.Logger{}}
 	dateStart := time.Date(2020, 2, 1, 11, 0, 0, 0, time.UTC)
 	//dateEnd := time.Date(2020, 1, 2, 11, 0, 0, 0, time.UTC)
 	event1, _ := event.CreateEvent(dateStart.Format(time.RFC3339), "", "Event 1", "Start event", 1, event.EnumTypeDuration.Day)
@@ -110,10 +108,9 @@ func TestAddDateIntervalBusy(t *testing.T) {
 
 func TestGetEvent(t *testing.T) {
 	var err error
-	InFile := storage.InFile{}
-	InFile.Init()
+	InFile,_ := storage.NewStorage()
 	InFile.Clear()
-	calendar := Calendar{Storage: &InFile}
+	calendar :=Calendar{Storage: InFile, Logger: &logrus.Logger{}}
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
 	title := "Event 1"
@@ -137,10 +134,9 @@ func TestGetEvent(t *testing.T) {
 }
 
 func TestEditEvent(t *testing.T) {
-	InFile := storage.InFile{}
-	InFile.Init()
+	InFile,_ := storage.NewStorage()
 	InFile.Clear()
-	calendar := Calendar{Storage: &InFile}
+	calendar :=Calendar{Storage: InFile, Logger: &logrus.Logger{}}
 
 	dateStart := time.Date(2020, 1, 1, 11, 0, 0, 0, time.UTC)
 	dateEnd := time.Date(2020, 1, 1, 12, 0, 0, 0, time.UTC)
@@ -171,3 +167,5 @@ func TestEditEvent(t *testing.T) {
 		t.Error("Edit Event not id Event  after edit")
 	}
 }
+
+

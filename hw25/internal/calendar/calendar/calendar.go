@@ -13,6 +13,7 @@ type Calendar struct {
 	Logger  *logrus.Logger
 }
 
+
 func (c Calendar) AddEvent(e event.Event) error {
 	c.Logger.Debug("Try add to storage, Event:", e)
 	isBusy, err := c.Storage.IsBusy(e)
@@ -60,7 +61,7 @@ func (c Calendar) GetAllEvents() ([]event.Event, error) {
 	events, err := c.Storage.GetAll()
 	if err != nil {
 		c.Logger.Debug("Fail get Events from storage:", err)
-		return events, err
+		return events,  err
 	}
 	if len(events) == 0 {
 		c.Logger.Debug("No events in storage")

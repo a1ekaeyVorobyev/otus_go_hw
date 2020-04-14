@@ -29,6 +29,7 @@ type scheduler struct {
 
 func NewScheduler(store pkg.Scheduler, logger *logrus.Logger,config Config,configRMQ rabbitmq.Config)(s *scheduler,err error){
 	s = &scheduler{}
+	s.store = store
 	s.config = config
 	s.configRMQ = configRMQ
 	s.logger = logger

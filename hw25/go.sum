@@ -1,5 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/a1ekaeyVorobyev/otus_go_hw v0.0.0-20200413205516-1a7da534d394 h1:eKNXReCo37oJbp5qkbswb1meUQfAPlCSLBmoxsKw5L4=
 github.com/a1ekaeyVorobyev/otus_go_hw/hw21 v0.0.0-20200322181144-ee903e96063f h1:ki+d/5olZsAP5/MfCEK/khOPN4EQ3sshLTTn//70r60=
 github.com/a1ekaeyVorobyev/otus_go_hw/hw21 v0.0.0-20200322181144-ee903e96063f/go.mod h1:R9AKuZ5AV8KkeEUDT1Xn1rZgkMolWpmsz52uBtZDMHQ=
 github.com/a1ekaeyVorobyev/otus_go_hw/hw22 v0.0.0-20200330061325-dc6dd55cf8d8 h1:2oYELNABs1H3f0+WGVGi4OdCi/9GkfBxQs1BGFszDXo=

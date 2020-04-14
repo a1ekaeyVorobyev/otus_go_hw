@@ -18,12 +18,9 @@ type InFile struct {
 }
 
 func NewStorage()(s *InFile, err error){
-	fmt.Print("create1 storage")
 	s = &InFile{}
 	s.events = make(map[int]event.Event)
-	fmt.Print("create2 storage")
 	s.loadEvents()
-	fmt.Print("create3 storage")
 	return s,nil
 }
 

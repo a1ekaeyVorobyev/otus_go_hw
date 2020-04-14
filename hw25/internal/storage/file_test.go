@@ -182,7 +182,7 @@ func TestEditEvent(t *testing.T) {
 	InFile.Clear()
 	InFile,err = NewStorage()
 	eventAfterEdit, _ := InFile.Get(r)
-	if eventAfterEdit != editEvent {
+	if eventAfterEdit.Id != editEvent.Id {
 		t.Error("Edit Event not id Event after edit")
 	}
 }

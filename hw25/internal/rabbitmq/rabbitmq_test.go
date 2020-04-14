@@ -12,7 +12,7 @@ func TestSendAndReciveMessage(t *testing.T) {
 	config := Config{
 		User:     "guest",
 		Pass:     "guest",
-		HostPort: "192.168.1.124:5672",
+		HostPort: "192.168.1.31:5672",
 		Timeout:  10,
 		Queue1:   "sendEvent",
 	}
