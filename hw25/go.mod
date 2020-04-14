@@ -7,6 +7,7 @@ require (
 	github.com/golang/protobuf v1.3.5
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
 	google.golang.org/grpc v1.28.0
