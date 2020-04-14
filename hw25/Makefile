@@ -17,3 +17,13 @@ build_grpc_unix:
 
 build_grpc_win:
 	./build/createproto.bat
+
+get_junit-report:
+	go	get -u github.com/jstemmer/go-junit-report
+
+help:
+	@echo build  - create programm
+	@echo test - run unit test
+	@echo get_junit-report - get unit test
+	@echo build_grpc_unix - protobuf in unix
+	@echo build_grpc_win -  protobuf in windows
