@@ -9,11 +9,11 @@ test:
 	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage
 	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq
 	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar
-	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/schedulerer
+	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/scheduler
+	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc
 
-go_test:
-	go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar && \
-    go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage && \
-    go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/grpc && \
-    go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/rabbitmq && \
-    go  test -v --count=1 github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/schedulerer
+build_grpc_unix:
+	./build/createproto.sh
+
+build_grpc_win:
+	./build/createproto.bat

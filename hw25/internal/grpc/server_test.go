@@ -2,11 +2,10 @@ package grpcserver
 
 import (
 	"context"
+	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/pkg/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/calendar"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/calendar/event"
-	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/config"
 	"github.com/a1ekaeyVorobyev/otus_go_hw/hw25/internal/storage"
-	proto "github.com/a1ekaeyVorobyev/otus_go_hw/hw22/pkg/calendar"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/sirupsen/logrus"
@@ -16,12 +15,14 @@ import (
 )
 
 func TestAddEventGetEvent(t *testing.T) {
-	inFile := storage.InFile{}
-	inFile.Init()
+	inFile,_ := storage.NewStorage()
 	inFile.Clear()
-
-	cal := calendar.Calendar{Storage: &inFile, Logger: &logrus.Logger{}}
-	grpcServer := Server{Config: config.Config{GrpcServer: "127.0.0.1:55051"}, Calendar: &cal, Logger: &logrus.Logger{}}
+	cal := calendar.Calendar{Storage: inFile, Logger: &logrus.Logger{}}
+	grpcServer,err := NewGRPSServer(Config{Server:"127.0.0.1:55051"}, &logrus.Logger{}, &cal)
+	if err!=nil{
+		t.Error("Fail create to GRPC server")
+	}
+	//grpcServer := Server{Config: config.Config{GrpcServer: "127.0.0.1:55051"}, Calendar: &cal, Logger: &logrus.Logger{}}
 	ctx := context.Background()
 	go grpcServer.Run()
 	time.Sleep(time.Second)

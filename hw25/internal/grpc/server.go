@@ -27,7 +27,7 @@ type CalendarServerGrpc struct {
 	calendar *calendar.Calendar
 }
 
-func NewGRPSDerver(conf Config, logger *logrus.Logger, calendar *calendar.Calendar) (s *server, err error) {
+func NewGRPSServer(conf Config, logger *logrus.Logger, calendar *calendar.Calendar) (s *server, err error) {
 	s = &server{}
 	s.config = conf
 	s.logger = logger

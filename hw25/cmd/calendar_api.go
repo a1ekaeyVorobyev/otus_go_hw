@@ -70,7 +70,7 @@ func main() {
 
 	cal := calendar.Calendar{Config: conf.DB, Storage: st, Logger: &logger}
 
-	grpcServer,err := grpcserver.NewGRPSDerver(conf.Grps,&logger,&cal)
+	grpcServer,err := grpcserver.NewGRPSServer(conf.Grps,&logger,&cal)
 	if(err!=nil){
 		logger.Error("Cann't create grps server:",err.Error())
 		os.Exit(2)
